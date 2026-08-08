@@ -1,0 +1,57 @@
+:root {
+  color-scheme: light;
+  --profile-primary: #4d8ffb;
+  --profile-surface: #ffffff;
+  --profile-heading: #2d2d2d;
+  --profile-body: #626262;
+  --profile-muted: #828282;
+  --profile-divider: #f6f6f6;
+  --profile-field: #ebebeb;
+  --profile-focus: #d9d9d9;
+  --profile-fieldset: #c0c0c0;
+  --profile-code-bg: #eeeeee;
+  --profile-code: #e83e8c;
+  --profile-highlight: #fff9c0;
+  --bs-primary: #4d8ffb;
+  --bs-primary-rgb: 77, 143, 251;
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #626262;
+  --bs-heading-color: #2d2d2d;
+  --bs-border-color: #ebebeb;
+  --bs-link-color: #4d8ffb;
+  --bs-link-hover-color: #2f73df;
+}
+
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+  --profile-primary: #5089e8;
+  --profile-surface: #141414;
+  --profile-heading: #d6d6d6;
+  --profile-body: #a5a5a5;
+  --profile-muted: #878787;
+  --profile-divider: #1d1d1d;
+  --profile-field: #272727;
+  --profile-focus: #373737;
+  --profile-fieldset: #4e4e4e;
+  --profile-code-bg: #242424;
+  --profile-code: #d44386;
+  --profile-highlight: #413f2b;
+  --bs-primary: #5089e8;
+  --bs-primary-rgb: 80, 137, 232;
+  --bs-body-bg: #141414;
+  --bs-body-color: #a5a5a5;
+  --bs-heading-color: #d6d6d6;
+  --bs-border-color: #272727;
+  --bs-link-color: #5089e8;
+  --bs-link-hover-color: #79a7f1;
+}
+
+::selection {
+  color: var(--profile-heading);
+  background: var(--profile-highlight);
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--profile-primary) 55%, transparent);
+  outline-offset: 3px;
+}

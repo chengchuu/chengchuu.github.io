@@ -1,0 +1,52 @@
+{
+  "name": "chengchuu.github.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cheng's generated GitHub profile and personal website.",
+  "scripts": {
+    "clean": "tsx scripts/clean.ts",
+    "validate:config": "tsx scripts/validate-config.ts",
+    "generate:data": "tsx scripts/generate-project-data.ts",
+    "build:theme": "webpack --config webpack/webpack.theme.ts",
+    "build:assets": "webpack --config webpack/webpack.site.ts",
+    "build:site": "tsx scripts/generate-static-site.tsx",
+    "copy:images": "tsx scripts/copy-images.ts",
+    "generate:seo": "tsx scripts/generate-seo.ts",
+    "generate:readme": "tsx scripts/generate-readme.ts",
+    "validate:dist": "tsx scripts/validate-dist.ts",
+    "build": "npm run clean && npm run validate:config && npm run generate:data && npm run build:theme && npm run build:assets && npm run build:site && npm run copy:images && npm run generate:seo && npm run generate:readme -- --output ../chengchuu/README.md && npm run validate:dist",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/**/*.test.ts",
+    "check": "npm run typecheck && npm test && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chengchuu/chengchuu.github.io.git"
+  },
+  "homepage": "https://chengchuu.github.io/",
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "mazey": "^5.6.7",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.2.8",
+    "@types/react-dom": "^19.2.3",
+    "css-loader": "^7.1.2",
+    "lint-staged": "^16.4.0",
+    "mini-css-extract-plugin": "^2.9.4",
+    "terser-webpack-plugin": "^5.3.14",
+    "ts-loader": "^9.5.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "webpack": "^5.101.3",
+    "webpack-cli": "^6.0.1"
+  }
+}
