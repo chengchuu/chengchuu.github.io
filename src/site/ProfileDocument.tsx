@@ -32,6 +32,34 @@ export function displayVersion(value: string | null): string | null {
   return value.startsWith("v") ? value : `v${value}`;
 }
 
+function releaseTimestamp(value: string | null): number {
+  if (!value) {
+    return Number.NEGATIVE_INFINITY;
+  }
+
+  const timestamp = Date.parse(value);
+  return Number.isNaN(timestamp) ? Number.NEGATIVE_INFINITY : timestamp;
+}
+
+function sortProjectsByLatestRelease(
+  projects: readonly GeneratedProject[],
+): GeneratedProject[] {
+  return projects
+    .map((project, index) => ({
+      index,
+      project,
+      timestamp: releaseTimestamp(project.latestReleaseAt),
+    }))
+    .sort((left, right) => {
+      if (left.timestamp !== right.timestamp) {
+        return right.timestamp - left.timestamp;
+      }
+
+      return left.index - right.index;
+    })
+    .map(({ project }) => project);
+}
+
 function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
   const created = displayDate(project.createdAt);
   const released = displayDate(project.latestReleaseAt);
@@ -104,6 +132,7 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
 export function ProfileDocument({
   projects,
 }: ProfileDocumentProps): ReactElement {
+  const projectsForDisplay = sortProjectsByLatestRelease(projects);
   const canonicalUrl = `${siteConfig.origin}${siteConfig.basePath}`;
   const profilePhotoUrl = new URL(
     siteConfig.assets.profilePhoto,
@@ -292,7 +321,7 @@ export function ProfileDocument({
                 </div>
               </div>
               <div className="project-grid">
-                {projects.map((project) => (
+                {projectsForDisplay.map((project) => (
                   <ProjectCard project={project} key={project.slug} />
                 ))}
               </div>

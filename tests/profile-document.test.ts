@@ -67,3 +67,43 @@ test("project cards omit star counts and place dates on their own row", () => {
     /<div class="project-meta-row"><span>v1\.2\.0<\/span><span>Go<\/span><\/div><div class="project-meta-row"><span>Created /,
   );
 });
+
+test("homepage projects are sorted by latest release without mutating input", () => {
+  const projects = [
+    {
+      ...projectFixture,
+      slug: "older",
+      name: "Older",
+      latestReleaseAt: "2025-08-01T07:13:20Z",
+    },
+    {
+      ...projectFixture,
+      slug: "missing",
+      name: "Missing",
+      latestReleaseAt: null,
+    },
+    {
+      ...projectFixture,
+      slug: "newer",
+      name: "Newer",
+      latestReleaseAt: "2026-08-01T07:13:20Z",
+    },
+    {
+      ...projectFixture,
+      slug: "invalid",
+      name: "Invalid",
+      latestReleaseAt: "not-a-date",
+    },
+  ];
+  const originalOrder = projects.map((project) => project.slug);
+  const html = renderToStaticMarkup(
+    createElement(ProfileDocument, { projects }),
+  );
+  const renderedSlugs = Array.from(
+    html.matchAll(/data-project-slug="([^"]+)"/g),
+    (match) => match[1],
+  );
+
+  assert.deepEqual(renderedSlugs, ["newer", "older", "missing", "invalid"]);
+  assert.deepEqual(projects.map((project) => project.slug), originalOrder);
+});
