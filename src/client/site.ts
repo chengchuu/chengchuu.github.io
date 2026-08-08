@@ -6,60 +6,54 @@ import {
 import { siteConfig } from "../config/site";
 import {
   applyResolvedTheme,
-  preferenceFromLabel,
+  getColorSchemeMedia,
   type ResolvedTheme,
-  type ThemePreference,
 } from "./theme-dom";
 import "../styles/site.css";
 
-let activePreference: ThemePreference = siteConfig.theme.defaultPreference;
+let activeTheme: ResolvedTheme = "light";
+let followsSystemTheme = false;
 
 function updateThemeButtons(): void {
-  document.querySelectorAll<HTMLButtonElement>("[data-theme-preference]").forEach(
-    (button) => {
+  document
+    .querySelectorAll<HTMLButtonElement>("button[data-theme-preference]")
+    .forEach((button) => {
       button.setAttribute(
         "aria-pressed",
-        String(button.dataset.themePreference === activePreference),
+        String(button.dataset.themePreference === activeTheme),
       );
-    },
-  );
-}
-
-function resolvedSystemTheme(media: MediaQueryList): ResolvedTheme {
-  return media.matches ? "dark" : "light";
+    });
 }
 
 function initializeThemeControls(): void {
-  const media = window.matchMedia("(prefers-color-scheme: dark)");
+  const media = getColorSchemeMedia(window);
   const resolved = resolveThemePreference(siteConfig.theme.storageKey);
-  activePreference = preferenceFromLabel(resolved.label);
-  applyResolvedTheme(resolved.value);
+  activeTheme = resolved.value;
+  followsSystemTheme = resolved.label === "System";
+  applyResolvedTheme(activeTheme);
+  document.documentElement.dataset.themePreference = activeTheme;
   updateThemeButtons();
 
-  document.querySelectorAll<HTMLButtonElement>("[data-theme-preference]").forEach(
-    (button) => {
-      button.addEventListener("click", () => {
-        const preference = button.dataset.themePreference as
-          | ThemePreference
-          | undefined;
-        if (!preference) {
-          return;
-        }
-
-        activePreference = preference;
-        setThemePreference(siteConfig.theme.storageKey, preference);
-        applyResolvedTheme(
-          preference === "system" ? resolvedSystemTheme(media) : preference,
-        );
-        document.documentElement.dataset.themePreference = preference;
-        updateThemeButtons();
-      });
-    },
-  );
+  for (const theme of ["light", "dark"] as const) {
+    const button = document.querySelector<HTMLButtonElement>(
+      `button[data-theme-preference="${theme}"]`,
+    );
+    button?.addEventListener("click", () => {
+      activeTheme = theme;
+      followsSystemTheme = false;
+      setThemePreference(siteConfig.theme.storageKey, theme);
+      applyResolvedTheme(activeTheme);
+      document.documentElement.dataset.themePreference = activeTheme;
+      updateThemeButtons();
+    });
+  }
 
   listenMediaQueryChanges(media, (event) => {
-    if (activePreference === "system") {
-      applyResolvedTheme(event.matches ? "dark" : "light");
+    if (followsSystemTheme) {
+      activeTheme = event.matches ? "dark" : "light";
+      applyResolvedTheme(activeTheme);
+      document.documentElement.dataset.themePreference = activeTheme;
+      updateThemeButtons();
     }
   });
 }

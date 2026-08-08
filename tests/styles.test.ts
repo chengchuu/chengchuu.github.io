@@ -69,3 +69,16 @@ test("primary controls use the configured accessible foreground", async () => {
     );
   }
 });
+
+test("profile portrait and outline use a circular shape", async () => {
+  const siteCss = await readFile(path.resolve("src/styles/site.css"), "utf8");
+
+  assert.match(
+    siteCss,
+    /\.portrait-frame::before\s*{[^}]*border-radius:\s*50%;/s,
+  );
+  assert.match(
+    siteCss,
+    /\.profile-photo\s*{[^}]*border-radius:\s*50%;/s,
+  );
+});

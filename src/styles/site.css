@@ -150,15 +150,14 @@ h3 {
   z-index: -1;
   content: "";
   border: 1px solid color-mix(in srgb, var(--profile-primary) 35%, var(--profile-field));
-  border-radius: 42% 58% 54% 46% / 46% 40% 60% 54%;
-  transform: rotate(3deg);
+  border-radius: 50%;
 }
 
 .profile-photo {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 42% 58% 54% 46% / 46% 40% 60% 54%;
+  border-radius: 50%;
   box-shadow: 0 1.8rem 4rem rgb(0 0 0 / 16%);
 }
 
@@ -273,11 +272,17 @@ h3 {
 
 .project-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem 1rem;
+  flex-direction: column;
+  gap: 0.4rem;
   margin: auto 0 1rem;
   color: var(--profile-muted);
   font-size: 0.82rem;
+}
+
+.project-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
 }
 
 .project-links {

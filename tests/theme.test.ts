@@ -1,10 +1,31 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { preferenceFromLabel } from "../src/client/theme-dom";
+import { getColorSchemeMedia } from "../src/client/theme-dom";
 
-test("theme labels preserve the selected preference", () => {
-  assert.equal(preferenceFromLabel("System"), "system");
-  assert.equal(preferenceFromLabel("Light"), "light");
-  assert.equal(preferenceFromLabel("Dark"), "dark");
-  assert.equal(preferenceFromLabel("Unknown"), "system");
+test("color-scheme media acquisition tolerates unavailable browser APIs", () => {
+  assert.equal(getColorSchemeMedia({}), null);
+  assert.equal(
+    getColorSchemeMedia({
+      matchMedia: () => {
+        throw new Error("blocked");
+      },
+    }),
+    null,
+  );
+});
+
+test("color-scheme media acquisition uses the expected query", () => {
+  const media = { matches: true } as MediaQueryList;
+  let receivedQuery = "";
+
+  assert.equal(
+    getColorSchemeMedia({
+      matchMedia: (query) => {
+        receivedQuery = query;
+        return media;
+      },
+    }),
+    media,
+  );
+  assert.equal(receivedQuery, "(prefers-color-scheme: dark)");
 });

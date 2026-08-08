@@ -1,11 +1,21 @@
 import { siteConfig } from "../config/site";
 
 export type ResolvedTheme = "light" | "dark";
-export type ThemePreference = "system" | ResolvedTheme;
 
-export function preferenceFromLabel(label: string): ThemePreference {
-  const normalized = label.toLowerCase();
-  return normalized === "light" || normalized === "dark" ? normalized : "system";
+interface MatchMediaHost {
+  matchMedia?: (query: string) => MediaQueryList;
+}
+
+export function getColorSchemeMedia(host: MatchMediaHost): MediaQueryList | null {
+  if (typeof host.matchMedia !== "function") {
+    return null;
+  }
+
+  try {
+    return host.matchMedia("(prefers-color-scheme: dark)");
+  } catch {
+    return null;
+  }
 }
 
 export function applyResolvedTheme(theme: ResolvedTheme): void {

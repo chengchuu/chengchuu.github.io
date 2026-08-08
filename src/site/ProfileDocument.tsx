@@ -32,10 +32,6 @@ export function displayVersion(value: string | null): string | null {
   return value.startsWith("v") ? value : `v${value}`;
 }
 
-export function displayStars(value: number): string {
-  return `${value} ${value === 1 ? "star" : "stars"}`;
-}
-
 function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
   const created = displayDate(project.createdAt);
   const released = displayDate(project.latestReleaseAt);
@@ -70,18 +66,25 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
         </p>
       )}
       <div className="project-meta" aria-label={`${project.name} metadata`}>
-        {version ? <span>{version}</span> : null}
-        {project.primaryLanguage ? <span>{project.primaryLanguage}</span> : null}
-        {project.stars !== null ? <span>{displayStars(project.stars)}</span> : null}
-        {created ? (
-          <span>
-            Created <time dateTime={created}>{created}</time>
-          </span>
+        {version || project.primaryLanguage ? (
+          <div className="project-meta-row">
+            {version ? <span>{version}</span> : null}
+            {project.primaryLanguage ? <span>{project.primaryLanguage}</span> : null}
+          </div>
         ) : null}
-        {released ? (
-          <span>
-            Released <time dateTime={released}>{released}</time>
-          </span>
+        {created || released ? (
+          <div className="project-meta-row">
+            {created ? (
+              <span>
+                Created <time dateTime={created}>{created}</time>
+              </span>
+            ) : null}
+            {released ? (
+              <span>
+                Released <time dateTime={released}>{released}</time>
+              </span>
+            ) : null}
+          </div>
         ) : null}
       </div>
       <div className="project-links" aria-label={`${project.name} resources`}>
@@ -181,7 +184,7 @@ export function ProfileDocument({
           <nav className="navbar navbar-expand" aria-label="Primary navigation">
             <div className="container py-2">
               <a className="navbar-brand" href="/" aria-label="Cheng home">
-                Cheng.
+                Cheng
               </a>
               <div className="d-flex align-items-center gap-2 gap-md-4">
                 <a className="nav-link d-none d-sm-inline" href="#projects">
@@ -198,13 +201,13 @@ export function ProfileDocument({
                   role="group"
                   aria-label="Theme preference"
                 >
-                  {(["system", "light", "dark"] as const).map((preference) => (
+                  {(["light", "dark"] as const).map((preference) => (
                     <button
                       className="theme-option"
                       type="button"
                       data-theme-preference={preference}
                       aria-label={`Use ${preference} theme`}
-                      aria-pressed={preference === "system" ? "true" : "false"}
+                      aria-pressed={preference === "light" ? "true" : "false"}
                       key={preference}
                     >
                       {preference.slice(0, 1).toUpperCase()}
