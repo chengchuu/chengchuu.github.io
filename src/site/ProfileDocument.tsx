@@ -193,7 +193,11 @@ export function ProfileDocument({
                 >
                   GitHub
                 </a>
-                <div className="theme-switcher" aria-label="Theme preference">
+                <div
+                  className="theme-switcher"
+                  role="group"
+                  aria-label="Theme preference"
+                >
                   {(["system", "light", "dark"] as const).map((preference) => (
                     <button
                       className="theme-option"
@@ -214,7 +218,7 @@ export function ProfileDocument({
         <main id="main-content">
           <section className="hero">
             <div className="container">
-              <div className="row align-items-center g-5">
+              <div className="row align-items-center gy-5 gx-0 gx-sm-5">
                 <div className="col-lg-7">
                   <p className="eyebrow">Full-Stack Developer</p>
                   <h1 className="hero-title">Building useful software, end to end.</h1>
@@ -261,7 +265,11 @@ export function ProfileDocument({
                     data-project-search
                   />
                 </label>
-                <div className="filter-list" aria-label="Filter projects">
+                <div
+                  className="filter-list"
+                  role="group"
+                  aria-label="Filter projects"
+                >
                   {[
                     ["all", "All"],
                     ["npm", "npm"],

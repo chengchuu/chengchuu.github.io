@@ -6,8 +6,10 @@ const allowedProtocols = new Set(["http:", "https:"]);
 const presetContracts = {
   mazey: {
     name: "Mazey",
+    category: "npm",
     repository: "chengchuu/mazey",
     packageName: "mazey",
+    status: "active",
     home: "https://chengchuu.github.io/mazey/",
     playground: "https://chengchuu.github.io/mazey/playground/",
     github: "https://github.com/chengchuu/mazey",
@@ -16,8 +18,10 @@ const presetContracts = {
   },
   asiatz: {
     name: "AsiaTZ",
+    category: "go",
     repository: "chengchuu/asiatz",
     modulePath: "github.com/chengchuu/asiatz",
+    status: "active",
     home: "https://chengchuu.github.io/asiatz/",
     examples: "https://chengchuu.github.io/asiatz/examples/",
     github: "https://github.com/chengchuu/asiatz",
@@ -34,12 +38,14 @@ const linkFields = [
   "api",
 ] as const satisfies readonly (keyof ProjectConfig)[];
 
-export function validateProjects(): string[] {
+export function validateProjects(
+  candidateProjects: readonly ProjectConfig[] = projects,
+): string[] {
   const errors: string[] = [];
   const slugs = new Set<string>();
   const repositories = new Set<string>();
 
-  for (const project of projects as readonly ProjectConfig[]) {
+  for (const project of candidateProjects) {
     if ("relationship" in project) {
       errors.push(`${project.slug} contains unsupported relationship metadata.`);
     }
@@ -79,7 +85,7 @@ export function validateProjects(): string[] {
   }
 
   for (const [slug, expected] of Object.entries(presetContracts)) {
-    const project = projects.find((candidate) => candidate.slug === slug);
+    const project = candidateProjects.find((candidate) => candidate.slug === slug);
     if (!project) {
       errors.push(`Required preset is missing: ${slug}`);
       continue;

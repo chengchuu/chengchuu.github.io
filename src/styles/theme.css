@@ -1,6 +1,7 @@
 :root {
   color-scheme: light;
   --profile-primary: #4d8ffb;
+  --profile-on-primary: #141414;
   --profile-surface: #ffffff;
   --profile-heading: #2d2d2d;
   --profile-body: #626262;

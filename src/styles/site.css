@@ -28,7 +28,7 @@ a {
   left: 0.75rem;
   z-index: 1100;
   padding: 0.65rem 1rem;
-  color: #ffffff;
+  color: var(--profile-on-primary);
   background: var(--profile-primary);
   border-radius: 0.6rem;
   transform: translateY(-150%);
@@ -89,8 +89,24 @@ h3 {
 }
 
 .theme-option[aria-pressed="true"] {
-  color: #ffffff;
+  color: var(--profile-on-primary);
   background: var(--profile-primary);
+}
+
+.btn-primary {
+  --bs-btn-color: var(--profile-on-primary);
+  --bs-btn-bg: var(--profile-primary);
+  --bs-btn-border-color: var(--profile-primary);
+  --bs-btn-hover-color: var(--profile-on-primary);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--profile-primary) 88%, #ffffff);
+  --bs-btn-hover-border-color: var(--bs-btn-hover-bg);
+  --bs-btn-focus-shadow-rgb: var(--bs-primary-rgb);
+  --bs-btn-active-color: var(--profile-on-primary);
+  --bs-btn-active-bg: color-mix(in srgb, var(--profile-primary) 80%, #ffffff);
+  --bs-btn-active-border-color: var(--bs-btn-active-bg);
+  --bs-btn-disabled-color: var(--profile-on-primary);
+  --bs-btn-disabled-bg: var(--profile-primary);
+  --bs-btn-disabled-border-color: var(--profile-primary);
 }
 
 .hero {
@@ -202,7 +218,7 @@ h3 {
 }
 
 .filter-button[aria-pressed="true"] {
-  color: #ffffff;
+  color: var(--profile-on-primary);
   background: var(--profile-primary);
   border-color: var(--profile-primary);
 }
@@ -283,7 +299,7 @@ h3 {
 
 .project-link:hover,
 .project-link:focus {
-  color: #ffffff;
+  color: var(--profile-on-primary);
   background: var(--profile-primary);
   border-color: var(--profile-primary);
 }

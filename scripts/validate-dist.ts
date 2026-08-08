@@ -4,6 +4,7 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { projects } from "../src/config/projects";
 import { siteConfig } from "../src/config/site";
+import { escapeMarkdown } from "./lib/format";
 import { defaultReadmePath, distDir, requiredImageNames, rootDir, sourceImagesDir } from "./lib/paths";
 
 async function main(): Promise<void> {
@@ -123,7 +124,7 @@ if (readme.includes("| Status |") || readme.includes("| Relationship |")) {
 }
 
 for (const project of projects) {
-  if (!readme.includes(`| ${project.name} |`)) {
+  if (!readme.includes(`| ${escapeMarkdown(project.name)} |`)) {
     errors.push(`Generated README is missing configured project: ${project.name}`);
   }
 }
