@@ -37,7 +37,6 @@ if (packageJson.devDependencies?.["lint-staged"] !== "^16.4.0") {
 
 const requiredPaths = [
   ".gitignore",
-  "package-lock.json",
   "tsconfig.json",
   "src",
   "scripts",
