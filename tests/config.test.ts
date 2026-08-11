@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { projectResourceFields } from "../src/config/project-resources";
 import { projects } from "../src/config/projects";
 import { validateProjects } from "../scripts/lib/validate-projects";
 import type { ProjectConfig } from "../src/types/project";
@@ -13,6 +14,13 @@ test("all project identities are unique", () => {
   assert.equal(
     new Set(projects.map((project) => project.repository)).size,
     projects.length,
+  );
+});
+
+test("project resources use the canonical display order", () => {
+  assert.deepEqual(
+    projectResourceFields.map(([field]) => field),
+    ["home", "playground", "examples", "api", "github", "npm"],
   );
 });
 

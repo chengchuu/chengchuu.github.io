@@ -53,8 +53,11 @@ export const projects = [
     repository: "chengchuu/mazey-lazy-load-images",
     packageName: "mazey-lazy-load-images",
     status: "active",
+    home: "https://chengchuu.github.io/mazey-lazy-load-images/",
+    playground: "https://chengchuu.github.io/mazey-lazy-load-images/playground/",
     github: "https://github.com/chengchuu/mazey-lazy-load-images",
     npm: "https://www.npmjs.com/package/mazey-lazy-load-images",
+    api: "https://chengchuu.github.io/mazey-lazy-load-images/api/",
   },
   {
     slug: "mazey-wordpress-utils",
