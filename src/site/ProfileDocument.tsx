@@ -1,19 +1,11 @@
 import type { ReactElement } from "react";
 import type { GeneratedProject } from "../types/project";
+import { projectResourceFields } from "../config/project-resources";
 import { siteConfig } from "../config/site";
 
 interface ProfileDocumentProps {
   projects: GeneratedProject[];
 }
-
-const resourceFields = [
-  ["home", "Home"],
-  ["playground", "Playground"],
-  ["examples", "Examples"],
-  ["github", "GitHub"],
-  ["npm", "npm"],
-  ["api", "API"],
-] as const;
 
 function displayDate(value: string | null): string | null {
   if (!value) {
@@ -116,7 +108,7 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
         ) : null}
       </div>
       <div className="project-links" aria-label={`${project.name} resources`}>
-        {resourceFields.map(([field, label]) => {
+        {projectResourceFields.map(([field, label]) => {
           const href = project[field];
           return href ? (
             <a className="project-link" href={href} key={field}>

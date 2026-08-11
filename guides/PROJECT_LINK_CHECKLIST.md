@@ -1,72 +1,72 @@
-# Project link checklist
+# Project links
 
-Use this checklist to review the `home`, `playground`, and `examples` resources for every configured project. [`src/config/projects.ts`](../src/config/projects.ts) remains the only source of truth; this document tracks review progress only.
-
-Status conventions:
-
-- `[x]` with a link means the resource is configured.
-- `[ ]` means the resource still requires review.
-- If a resource does not apply, complete it as `[x]` with `N/A` and a short reason.
+This document lists configured project resources. [`src/config/projects.ts`](../src/config/projects.ts) remains the only source of truth. If a resource is not configured, omit it from this document.
 
 ## npm projects
 
-### Mazey (`mazey`)
+### Mazey
 
-- [x] Home — [Mazey home](https://chengchuu.github.io/mazey/)
-- [x] Playground — [Mazey playground](https://chengchuu.github.io/mazey/playground/)
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: mazey
+- Home — <https://chengchuu.github.io/mazey/>
+- Playground — <https://chengchuu.github.io/mazey/playground/>
+- API — <https://chengchuu.github.io/mazey/api/>
+- GitHub — <https://github.com/chengchuu/mazey>
+- npm — <https://www.npmjs.com/package/mazey>
 
-### WeChat Launch App (`mazey-wechat-launch-app`)
+### WeChat Launch App
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: mazey-wechat-launch-app
+- GitHub — <https://github.com/chengchuu/mazey-wechat-launch-app>
+- npm — <https://www.npmjs.com/package/mazey-wechat-launch-app>
 
-### Taro Utils (`mazey-taro-utils`)
+### Taro Utils
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: mazey-taro-utils
+- GitHub — <https://github.com/chengchuu/mazey-taro-utils>
+- npm — <https://www.npmjs.com/package/mazey-taro-utils>
 
-### Aliyun OSS CLI (`aliyunoss-cli`)
+### Aliyun OSS CLI
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: aliyunoss-cli
+- GitHub — <https://github.com/chengchuu/aliyunoss-cli>
+- npm — <https://www.npmjs.com/package/aliyunoss-cli>
 
-### Lazy Load Images (`mazey-lazy-load-images`)
+### Lazy Load Images
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: mazey-lazy-load-images
+- Home — <https://chengchuu.github.io/mazey-lazy-load-images/>
+- Playground — <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
+- API — <https://chengchuu.github.io/mazey-lazy-load-images/api/>
+- GitHub — <https://github.com/chengchuu/mazey-lazy-load-images>
+- npm — <https://www.npmjs.com/package/mazey-lazy-load-images>
 
-### WordPress Utils (`mazey-wordpress-utils`)
+### WordPress Utils
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: mazey-wordpress-utils
+- GitHub — <https://github.com/chengchuu/mazey-wordpress-utils>
+- npm — <https://www.npmjs.com/package/mazey-wordpress-utils>
 
 ## Go projects
 
-### GURL (`gurl`)
+### GURL
 
-- [ ] Home — Add `home` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [ ] Examples — Add `examples` to `src/config/projects.ts` or mark this item `N/A`.
+- Slug: gurl
+- GitHub — <https://github.com/chengchuu/gurl>
 
-### AsiaTZ (`asiatz`)
+### AsiaTZ
 
-- [x] Home — [AsiaTZ home](https://chengchuu.github.io/asiatz/)
-- [ ] Playground — Add `playground` to `src/config/projects.ts` or mark this item `N/A`.
-- [x] Examples — [AsiaTZ examples](https://chengchuu.github.io/asiatz/examples/)
+- Slug: asiatz
+- Home — <https://chengchuu.github.io/asiatz/>
+- Examples — <https://chengchuu.github.io/asiatz/examples/>
+- API — <https://chengchuu.github.io/asiatz/api/>
+- GitHub — <https://github.com/chengchuu/asiatz>
 
-## Complete a checklist item
+## Add a project link
 
 1. Confirm that the resource belongs to the project and uses an absolute HTTP or HTTPS URL.
-2. Add the corresponding `home`, `playground`, or `examples` field to `src/config/projects.ts`.
-3. Replace the unchecked item with a checked item and a descriptive link.
-4. If the resource does not apply, use the format `- [x] Resource — N/A: <reason>.` instead.
-5. Run the repository checks.
+2. Add the corresponding field to `src/config/projects.ts`.
+3. Add the resource to this document after it is configured.
+4. Run the repository checks.
 
 Do not create a standalone top-level portfolio page to satisfy an item. Link only to a project-specific resource that already exists or is implemented in the project that owns it.
 

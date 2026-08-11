@@ -1,18 +1,10 @@
 import path from "node:path";
+import { projectResourceFields } from "../src/config/project-resources";
 import type { GeneratedProject } from "../src/types/project";
 import { escapeMarkdown, formatDate } from "./lib/format";
 import { writeText } from "./lib/files";
 import { defaultReadmePath } from "./lib/paths";
 import { readGeneratedProjects } from "./lib/project-data";
-
-const resourceFields = [
-  ["home", "Home"],
-  ["playground", "Playground"],
-  ["examples", "Examples"],
-  ["github", "GitHub"],
-  ["npm", "npm"],
-  ["api", "API"],
-] as const;
 
 function outputPathFromArgs(): string {
   const outputIndex = process.argv.indexOf("--output");
@@ -29,7 +21,7 @@ function outputPathFromArgs(): string {
 }
 
 function linksFor(project: GeneratedProject): string {
-  return resourceFields
+  return projectResourceFields
     .flatMap(([field, label]) => {
       const href = project[field];
       return href ? [`[${label}](${href})`] : [];
