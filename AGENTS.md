@@ -26,7 +26,7 @@ The sibling `../chengchuu/` repository owns the generated profile `README.md` an
 - `src/site/ProfileDocument.tsx` server-renders the complete homepage with React. Render every project on `/`; never generate standalone top-level `/projects/`, `/playground/`, or `/api/` pages.
 - The homepage sorts project cards by descending `latestReleaseAt`, places missing or invalid dates last, and preserves configuration order for ties. This is a presentation-only sort; do not reorder the canonical configuration or generated README for it.
 - Browser JavaScript is limited to pre-paint theme resolution, light/dark selection, project search, and category filters. Keep important profile and project content in generated HTML.
-- The visible theme selector has only light and dark choices. Mazey resolves the initial system preference and handles stored selections; theme updates must keep `data-bs-theme`, `data-theme-preference`, `theme-color`, and `aria-pressed` synchronized.
+- The visible theme control is a two-state light/dark toggle with inline Bootstrap Icons. Mazey resolves the initial URL, stored, or one-time system preference and persists explicit selections; theme updates must keep `data-bs-theme`, `data-theme-preference`, `theme-color`, the accessible label, and icon visibility synchronized without following later operating-system changes.
 - `src/styles/theme.css` owns shared theme variables. `src/styles/site.css` owns Bootstrap integration, layout, responsive styles, and component presentation.
 - Webpack has two production browser targets: `webpack.theme.ts` emits the pre-paint theme runtime and CSS, and `webpack.site.ts` emits the interactive site runtime and CSS. The static-site script writes the HTML document separately.
 

@@ -4,8 +4,13 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { projects } from "../src/config/projects";
 import { siteConfig } from "../src/config/site";
+import {
+  moonStarsFillIconPaths,
+  sunFillIconPaths,
+} from "../src/site/theme-icons";
 import { escapeMarkdown } from "./lib/format";
 import { defaultReadmePath, distDir, requiredImageNames, rootDir, sourceImagesDir } from "./lib/paths";
+import { hasLightThemeRoot } from "./lib/theme-markup";
 
 async function main(): Promise<void> {
 const errors: string[] = [];
@@ -45,6 +50,7 @@ const requiredHtml = [
   `rel="canonical" href="${canonicalUrl}"`,
   `property="og:image" content="${siteConfig.origin}${siteConfig.assets.openGraph}"`,
   `data-bs-theme="light"`,
+  `data-theme-preference="light"`,
   `src="${siteConfig.assets.profilePhoto}"`,
   `alt="Portrait of Cheng"`,
   `width="512" height="512"`,
@@ -56,6 +62,83 @@ for (const fragment of requiredHtml) {
   if (!html.includes(fragment)) {
     errors.push(`Homepage is missing required content: ${fragment}`);
   }
+}
+
+if (!hasLightThemeRoot(html)) {
+  errors.push("Homepage root must expose light-consistent theme attributes.");
+}
+
+const buttonMarkup = html.match(/<button\b[^>]*>[\s\S]*?<\/button>/g) ?? [];
+const themeToggles = buttonMarkup.filter((button) =>
+  /class="[^"]*\btheme-toggle\b[^"]*"/.test(button),
+);
+
+if (themeToggles.length !== 1) {
+  errors.push(`Homepage must contain exactly one theme toggle; found ${themeToggles.length}.`);
+} else {
+  const themeToggle = themeToggles[0]!;
+  const openingTag = themeToggle.match(/<button\b[^>]*>/)?.[0] ?? "";
+  const svgTags = themeToggle.match(/<svg\b[^>]*>/g) ?? [];
+  const sunIcon = svgTags.find((svg) => svg.includes("theme-toggle__icon--sun"));
+  const moonIcon = svgTags.find((svg) =>
+    svg.includes("theme-toggle__icon--moon"),
+  );
+
+  for (const requiredAttribute of [
+    'type="button"',
+    'aria-label="Current theme: Light. Switch to dark theme."',
+  ]) {
+    if (!openingTag.includes(requiredAttribute)) {
+      errors.push(`Theme toggle is missing required content: ${requiredAttribute}`);
+    }
+  }
+
+  if (/aria-pressed|data-theme-preference/.test(openingTag)) {
+    errors.push("Theme toggle contains obsolete preference state attributes.");
+  }
+
+  if (svgTags.length !== 2 || !sunIcon || !moonIcon) {
+    errors.push("Theme toggle must contain one sun icon and one moon icon.");
+  } else {
+    for (const [label, icon] of [
+      ["sun", sunIcon],
+      ["moon", moonIcon],
+    ] as const) {
+      for (const requiredAttribute of [
+        'width="16"',
+        'height="16"',
+        'aria-hidden="true"',
+        'focusable="false"',
+      ]) {
+        if (!icon.includes(requiredAttribute)) {
+          errors.push(`Theme ${label} icon is missing: ${requiredAttribute}`);
+        }
+      }
+    }
+
+    if (/\shidden(?:=""|(?=\s|>))/.test(sunIcon)) {
+      errors.push("Theme sun icon must be visible in the initial light state.");
+    }
+    if (!/\shidden(?:=""|(?=\s|>))/.test(moonIcon)) {
+      errors.push("Theme moon icon must be hidden in the initial light state.");
+    }
+  }
+
+  for (const iconPath of [
+    ...sunFillIconPaths,
+    ...moonStarsFillIconPaths,
+  ]) {
+    if (!themeToggle.includes(iconPath)) {
+      errors.push(`Theme toggle is missing an official icon path: ${iconPath}`);
+    }
+  }
+}
+
+if (/theme-switcher|theme-option/.test(html)) {
+  errors.push("Homepage contains obsolete theme switcher classes.");
+}
+if (/<button\b[^>]*data-theme-preference/.test(html)) {
+  errors.push("Homepage contains a button-level theme preference attribute.");
 }
 
 for (const forbiddenPath of ["projects", "playground", "api"]) {

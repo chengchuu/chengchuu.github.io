@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import test from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -30,24 +32,48 @@ test("displayVersion does not duplicate an existing v prefix", () => {
   assert.equal(displayVersion(null), null);
 });
 
-test("theme and project filters expose accessible group names", () => {
+test("theme toggle and project filters expose accessible controls", () => {
   const html = renderToStaticMarkup(
     createElement(ProfileDocument, { projects: [] }),
   );
+  const themeToggle = html.match(
+    /<button class="theme-toggle"[\s\S]*?<\/button>/,
+  )?.[0];
+  const iconPaths = ["sun-fill.svg", "moon-stars-fill.svg"].flatMap(
+    (iconName) =>
+      Array.from(
+        readFileSync(
+          path.join("node_modules", "bootstrap-icons", "icons", iconName),
+          "utf8",
+        ).matchAll(/d="([^"]+)"/g),
+        (match) => match[1]!,
+      ),
+  );
 
+  assert.ok(themeToggle);
+  assert.equal(html.match(/class="theme-toggle"/g)?.length, 1);
   assert.match(
     html,
-    /class="theme-switcher" role="group" aria-label="Theme preference"/,
+    /<html lang="en" data-bs-theme="light" data-theme-preference="light">/,
+  );
+  assert.match(themeToggle, /type="button"/);
+  assert.match(
+    themeToggle,
+    /aria-label="Current theme: Light\. Switch to dark theme\."/,
   );
   assert.match(
-    html,
-    /data-theme-preference="light"[^>]*aria-pressed="true"/,
+    themeToggle,
+    /class="theme-toggle__icon theme-toggle__icon--sun" width="16" height="16"[^>]*aria-hidden="true" focusable="false"/,
   );
   assert.match(
-    html,
-    /data-theme-preference="dark"[^>]*aria-pressed="false"/,
+    themeToggle,
+    /class="theme-toggle__icon theme-toggle__icon--moon" width="16" height="16"[^>]*aria-hidden="true" focusable="false" hidden=""/,
   );
-  assert.doesNotMatch(html, /data-theme-preference="system"/);
+  for (const iconPath of iconPaths) {
+    assert.ok(themeToggle.includes(iconPath));
+  }
+  assert.doesNotMatch(themeToggle, /aria-pressed|data-theme-preference/);
+  assert.doesNotMatch(html, /theme-switcher|theme-option/);
   assert.match(html, /aria-label="Cheng home">Cheng<\/a>/);
   assert.match(
     html,

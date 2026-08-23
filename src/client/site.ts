@@ -1,61 +1,21 @@
-import {
-  listenMediaQueryChanges,
-  resolveThemePreference,
-  setThemePreference,
-} from "mazey";
+import { resolveThemePreference, setThemePreference } from "mazey";
 import { siteConfig } from "../config/site";
-import {
-  applyResolvedTheme,
-  getColorSchemeMedia,
-  type ResolvedTheme,
-} from "./theme-dom";
+import { initializeThemeController } from "./theme-controller";
+import { applyResolvedTheme } from "./theme-dom";
 import "../styles/site.css";
 
-let activeTheme: ResolvedTheme = "light";
-let followsSystemTheme = false;
-
-function updateThemeButtons(): void {
-  document
-    .querySelectorAll<HTMLButtonElement>("button[data-theme-preference]")
-    .forEach((button) => {
-      button.setAttribute(
-        "aria-pressed",
-        String(button.dataset.themePreference === activeTheme),
-      );
-    });
-}
-
 function initializeThemeControls(): void {
-  const media = getColorSchemeMedia(window);
-  const resolved = resolveThemePreference(siteConfig.theme.storageKey);
-  activeTheme = resolved.value;
-  followsSystemTheme = resolved.label === "System";
-  applyResolvedTheme(activeTheme);
-  document.documentElement.dataset.themePreference = activeTheme;
-  updateThemeButtons();
-
-  for (const theme of ["light", "dark"] as const) {
-    const button = document.querySelector<HTMLButtonElement>(
-      `button[data-theme-preference="${theme}"]`,
-    );
-    button?.addEventListener("click", () => {
-      activeTheme = theme;
-      followsSystemTheme = false;
-      setThemePreference(siteConfig.theme.storageKey, theme);
-      applyResolvedTheme(activeTheme);
-      document.documentElement.dataset.themePreference = activeTheme;
-      updateThemeButtons();
-    });
-  }
-
-  listenMediaQueryChanges(media, (event) => {
-    if (followsSystemTheme) {
-      activeTheme = event.matches ? "dark" : "light";
-      applyResolvedTheme(activeTheme);
-      document.documentElement.dataset.themePreference = activeTheme;
-      updateThemeButtons();
-    }
+  const controller = initializeThemeController({
+    resolveTheme: () =>
+      resolveThemePreference(siteConfig.theme.storageKey).value,
+    persistTheme: (theme) =>
+      setThemePreference(siteConfig.theme.storageKey, theme),
+    applyTheme: applyResolvedTheme,
   });
+
+  document
+    .querySelector<HTMLButtonElement>(".theme-toggle")
+    ?.addEventListener("click", controller.toggleTheme);
 }
 
 function initializeProjectFilters(): void {

@@ -68,29 +68,41 @@ h3 {
   color: var(--profile-primary);
 }
 
-.theme-switcher {
+.theme-toggle {
   display: inline-flex;
-  gap: 0.2rem;
-  padding: 0.2rem;
-  border: 1px solid var(--profile-field);
-  border-radius: 999px;
-  background: var(--profile-surface);
-}
-
-.theme-option {
-  min-width: 2.5rem;
-  padding: 0.35rem 0.65rem;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  padding: 7px;
   color: var(--profile-muted);
-  background: transparent;
-  border: 0;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 650;
+  background: var(--profile-surface);
+  border: 1px solid var(--profile-field);
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.theme-option[aria-pressed="true"] {
-  color: var(--profile-on-primary);
-  background: var(--profile-primary);
+.theme-toggle:hover {
+  color: var(--profile-heading);
+  background: var(--profile-divider);
+  border-color: var(--profile-focus);
+}
+
+.theme-toggle:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--profile-primary) 55%, transparent);
+  outline-offset: 3px;
+}
+
+.theme-toggle__icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.theme-toggle__icon[hidden] {
+  display: none;
 }
 
 .btn-primary {
