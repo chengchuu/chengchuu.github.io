@@ -12,8 +12,8 @@ importers:
         specifier: ^5.3.8
         version: 5.3.8(@popperjs/core@2.11.8)
       mazey:
-        specifier: ^5.6.7
-        version: 5.6.7
+        specifier: ^5.7.4
+        version: 5.7.4
       react:
         specifier: ^19.2.8
         version: 19.2.8
@@ -655,8 +655,8 @@ packages:
   make-error@1.3.6:
     resolution: {integrity: sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==}
 
-  mazey@5.6.7:
-    resolution: {integrity: sha512-evqidvJMi55LD5E39nlP4VssW4HMrs4C4vMftqtvKgpycGEJ/Jwxm8h0cZKaY3LEKYGxgxuJtV3zIGBiLbkMMQ==}
+  mazey@5.7.4:
+    resolution: {integrity: sha512-DZHMDnO6V9FYSaGuqFnGeSvVcY+yaCQN2tZAXrc7dPhGCaaKAKl7boXw+8m8EUm98MB4K75vcopmE45WFdJkYQ==}
 
   merge-stream@2.0.0:
     resolution: {integrity: sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==}
@@ -1592,7 +1592,7 @@ snapshots:
 
   make-error@1.3.6: {}
 
-  mazey@5.6.7: {}
+  mazey@5.7.4: {}
 
   merge-stream@2.0.0: {}
 
