@@ -56,7 +56,6 @@ test("primary controls use the configured accessible foreground", async () => {
   );
   for (const selector of [
     "skip-link",
-    "theme-option",
     "filter-button",
     "project-link",
   ]) {
@@ -68,6 +67,29 @@ test("primary controls use the configured accessible foreground", async () => {
       ),
     );
   }
+});
+
+test("theme toggle uses fixed circular sizing and accessible states", async () => {
+  const siteCss = await readFile(path.resolve("src/styles/site.css"), "utf8");
+  const toggleStyles = siteCss.match(/\.theme-toggle\s*{([^}]*)}/s)?.[1];
+
+  assert.ok(toggleStyles);
+  assert.match(toggleStyles, /box-sizing:\s*border-box;/);
+  assert.match(toggleStyles, /width:\s*32px;/);
+  assert.match(toggleStyles, /height:\s*32px;/);
+  assert.match(toggleStyles, /border-radius:\s*50%;/);
+  assert.match(toggleStyles, /align-items:\s*center;/);
+  assert.match(toggleStyles, /justify-content:\s*center;/);
+  assert.match(
+    siteCss,
+    /\.theme-toggle__icon\s*{[^}]*width:\s*16px;[^}]*height:\s*16px;/s,
+  );
+  assert.match(
+    siteCss,
+    /\.theme-toggle__icon\[hidden\]\s*{[^}]*display:\s*none;/s,
+  );
+  assert.match(siteCss, /\.theme-toggle:hover\s*{[^}]*background:/s);
+  assert.match(siteCss, /\.theme-toggle:focus-visible\s*{[^}]*outline:/s);
 });
 
 test("profile portrait and outline use a circular shape", async () => {

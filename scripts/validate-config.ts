@@ -16,7 +16,6 @@ const packageJson = JSON.parse(
 
 const requiredDependencies = {
   bootstrap: "^5.3.8",
-  mazey: "^5.6.7",
   react: "^19.2.8",
   "react-dom": "^19.2.8",
 } as const;
@@ -31,8 +30,19 @@ for (const [name, version] of Object.entries(requiredDependencies)) {
   }
 }
 
-if (packageJson.devDependencies?.["lint-staged"] !== "^16.4.0") {
-  errors.push("package.json must declare lint-staged as ^16.4.0.");
+if (!packageJson.dependencies?.mazey) {
+  errors.push("package.json must declare mazey as a dependency.");
+}
+
+const requiredDevDependencies = {
+  "bootstrap-icons": "^1.13.1",
+  "lint-staged": "^16.4.0",
+} as const;
+
+for (const [name, version] of Object.entries(requiredDevDependencies)) {
+  if (packageJson.devDependencies?.[name] !== version) {
+    errors.push(`package.json must declare ${name} as ${version}.`);
+  }
 }
 
 const requiredPaths = [

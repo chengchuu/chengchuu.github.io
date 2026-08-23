@@ -2,54 +2,96 @@
 
 ## Repository role
 
-This repository is the source and build authority for Cheng's single-page developer profile, project portfolio, and generated GitHub profile README. It is a private Node.js 22 application, not a publishable npm package. Use npm only.
+This repository is the source and build authority for Cheng's single-page developer profile, project portfolio, generated GitHub profile README, and GitHub Pages deployment. It is a private Node.js 22 application, not a publishable package.
 
-The sibling `../chengchuu/` repository owns the generated profile README. Do not add a second project configuration there.
+The sibling `../chengchuu/` repository owns the generated profile `README.md` and its profile-specific assets. Do not initialize another JavaScript project or maintain a second project inventory there.
 
-## Source map
+## Package tooling
 
-- `src/config/site.ts`: canonical site identity, URLs, assets, and theme settings.
-- `src/config/projects.ts`: only source of truth for the complete project inventory.
-- `src/generated/projects.json`: retained normalized metadata used for fallback builds.
-- `src/site/ProfileDocument.tsx`: React server-rendered homepage document.
-- `src/client/theme-runtime.ts`: pre-paint theme resolution.
-- `src/client/site.ts`: light/dark controls, project search, and filtering.
-- `src/styles/`: Bootstrap integration, shared palette, and responsive styling.
-- `scripts/`: configuration validation, metadata collection, static generation, README generation, and output validation.
-- `webpack/`: separate Webpack 5 builds for the theme runtime and site assets.
-- `tests/`: Node test-runner regression coverage.
-- `images/`: six immutable source images copied byte-for-byte to `dist/images/`.
-- `.github/workflows/pages.yml`: scheduled and push-triggered GitHub Pages deployment.
+- Use the npm commands defined in `package.json` for local checks and GitHub Actions. The build script currently composes its stages with `npm run`.
+- Keep `package.json` private. `scripts/validate-config.ts` enforces the required dependency declarations and exact ranges except for Mazey, which must be present but is not version-pinned by validation.
+- `package-lock.json` is intentionally ignored. The repository retains `pnpm-lock.yaml`, and `pnpm-workspace.yaml` contains pnpm build-policy settings. Keep those pnpm files aligned with intentional dependency changes, but do not switch the documented commands or CI package manager unless the task explicitly includes that migration.
+- Do not add an `engines` declaration or a `packageManager` field unless the task explicitly requires one. Node.js 22 remains the documented and CI runtime.
 
-## Architecture contracts
+## Source ownership
 
-- Keep every project in `src/config/projects.ts`. Mazey and AsiaTZ are required presets, but all configured projects must appear on the homepage and in the appropriate README table.
-- Render the portfolio on `/`. Never generate top-level `/projects/`, `/playground/`, or `/api/` pages.
-- Render important content to static HTML with React. Keep browser JavaScript limited to theme behavior, search, and filtering.
-- The visible theme selector has only light and dark choices. System preference supplies the initial resolution until the visitor explicitly selects a theme.
-- Use Mazey's theme APIs directly and access the storage key only through `siteConfig.theme.storageKey`. Theme changes must update `data-bs-theme`, `theme-color`, and control state.
-- Treat `images/chengchuu-512x512.jpg` as Cheng's identifiable portrait. Do not crop, resize, re-encode, rename, or otherwise transform any source image.
-- Preserve strict TypeScript with `module` and `moduleResolution` set to `NodeNext`.
-- Keep `package.json` private and preserve the required dependency ranges checked by `scripts/validate-config.ts`.
-- Do not commit `dist/`, `node_modules/`, `package-lock.json`, coverage, caches, temporary files, `.DS_Store`, or other generated output. This multi-developer repository intentionally does not maintain an npm lockfile.
+- `src/config/projects.ts` is the only maintained project inventory. Mazey and AsiaTZ are required presets, and every configured project must appear on the generated homepage and in the profile README.
+- `src/config/project-resources.ts` defines the shared resource labels and order: Home, Playground, Examples, API, GitHub, then npm. The homepage, generated README, and `guides/PROJECT_LINK_CHECKLIST.md` must use that order and omit unavailable resources.
+- `src/config/site.ts` owns the site identity, canonical origin, public asset paths, and theme settings. Access the storage key only through `siteConfig.theme.storageKey`.
+- `src/generated/projects.json` is tracked normalized metadata and the fallback for temporary upstream failures. Do not hand-maintain it as a second project list.
+- `guides/PROJECT_LINK_CHECKLIST.md` mirrors known links from the canonical project configuration. Format each entry with a plain project heading followed by `- Slug: <slug>`.
 
-## Commands and side effects
+## Site architecture
+
+- `src/site/ProfileDocument.tsx` server-renders the complete homepage with React. Render every project on `/`; never generate standalone top-level `/projects/`, `/playground/`, or `/api/` pages.
+- The homepage sorts project cards by descending `latestReleaseAt`, places missing or invalid dates last, and preserves configuration order for ties. This is a presentation-only sort; do not reorder the canonical configuration or generated README for it.
+- Browser JavaScript is limited to pre-paint theme resolution, light/dark selection, project search, and category filters. Keep important profile and project content in generated HTML.
+- The visible theme control is a two-state light/dark toggle with inline Bootstrap Icons. Mazey resolves the initial URL, stored, or one-time system preference and persists explicit selections; theme updates must keep `data-bs-theme`, `data-theme-preference`, `theme-color`, the accessible label, and icon visibility synchronized without following later operating-system changes.
+- `src/styles/theme.css` owns shared theme variables. `src/styles/site.css` owns Bootstrap integration, layout, responsive styles, and component presentation.
+- Webpack has two production browser targets: `webpack.theme.ts` emits the pre-paint theme runtime and CSS, and `webpack.site.ts` emits the interactive site runtime and CSS. The static-site script writes the HTML document separately.
+
+## Images and public metadata
+
+- `images/` contains six required source images copied byte-for-byte to `dist/images/`. Do not copy `.DS_Store` or other filesystem metadata.
+- Treat `images/chengchuu-512x512.jpg` as Cheng's identifiable portrait. Do not crop, resize, re-encode, rename, regenerate, or substitute it. Keep its configured path, `alt="Portrait of Cheng"`, intrinsic 512×512 dimensions, and absolute `Person.image` URL intact.
+- Keep the existing logo files for favicons, the web app manifest, and Open Graph metadata.
+- `scripts/generate-seo.ts` owns `robots.txt`, `sitemap.xml`, and `site.webmanifest`. The homepage owns its canonical URL, description, Open Graph and Twitter metadata, and Person JSON-LD.
+
+## Generated outputs and build effects
+
+The main generated artifacts are:
+
+```text
+dist/
+src/generated/projects.json
+../chengchuu/README.md
+```
+
+`dist/` is disposable and ignored. The metadata JSON and sibling README are tracked outputs. A complete build performs these stages in order:
+
+```text
+Clean dist
+→ validate configuration
+→ fetch GitHub, npm, and Go metadata
+→ build theme assets
+→ build site assets
+→ render static HTML
+→ copy images
+→ generate SEO files
+→ generate the profile README
+→ validate dist and README coverage
+```
+
+Metadata requests use timeouts, retries, bounded batches, and `Promise.allSettled()`-style isolation. Preserve valid previous values when an upstream source fails, and mark incomplete results as `partial` or `unavailable` instead of dropping configured projects.
+
+## Commands
+
+Run commands from this repository:
 
 ```bash
 npm install
 npm run typecheck
 npm test
+npm run validate:config
 npm run build
 npm run preview
 npm run check
 ```
 
-`npm run build` cleans `dist/`, validates configuration, fetches GitHub, npm, and Go metadata, rewrites `src/generated/projects.json`, builds the static site, copies images, generates SEO files, regenerates `../chengchuu/README.md`, and validates the output. Metadata requests use bounded concurrency, timeouts, retries, and retained valid fallback data; incomplete results must be marked `partial`.
+`npm run preview` serves an existing `dist/` directory at `http://localhost:4173` with Python 3. `npm run check` runs type checking, the Node test-runner suite, and the complete network-dependent production build.
 
-Run `npm run preview` after a successful build to serve `dist/` at `http://localhost:4173` with Python 3. Run `npm run check` before release-facing changes; it performs type checking, tests, and the complete production build.
+The build fetches live metadata and rewrites `src/generated/projects.json` and `../chengchuu/README.md`. Inspect those diffs and restore unrelated refreshes when metadata changes are outside the task.
+
+## Deployment
+
+`.github/workflows/pages.yml` runs on pushes to `main`, manual dispatches, and a daily schedule. It uses Node.js 22, runs `npm install` without npm caching, executes `npm run check`, and uploads only `dist/` to GitHub Pages.
 
 ## Change discipline
 
-Follow the existing TypeScript style: two-space indentation, double quotes, semicolons, and focused modules. Preserve user-authored profile content and avoid speculative restructuring. Add targeted regression tests for confirmed defects in configuration, metadata fallback, rendering, styles, or theme behavior.
+- Follow the existing TypeScript style: two-space indentation, double quotes, semicolons, strict types, and focused modules. Keep `module` and `moduleResolution` set to `NodeNext`.
+- Preserve the profile introduction, sibling `images/rock-that-body.gif`, source images, canonical project inventory, and unrelated worktree changes unless the task explicitly includes them.
+- Add focused regression tests for confirmed defects in configuration, metadata fallback, resource ordering, rendering, styles, or theme behavior. Avoid speculative refactors.
+- Do not track `dist/`, `node_modules/`, `package-lock.json`, coverage, caches, temporary files, or `.DS_Store`.
+- Do not stage, commit, push, or deploy unless the user requests it.
 
-Finish with `git diff --check` and inspect `git status --short` in both this repository and `../chengchuu/`, because a build can modify files in both checkouts.
+For implementation changes, run `npm run check`. For documentation-only changes, run the narrowest relevant checks. Always finish with `git diff --check` and inspect `git status --short` in this repository and `../chengchuu/`. Report network-dependent failures separately.

@@ -2,6 +2,7 @@ import type { ReactElement } from "react";
 import type { GeneratedProject } from "../types/project";
 import { projectResourceFields } from "../config/project-resources";
 import { siteConfig } from "../config/site";
+import { moonStarsFillIconPaths, sunFillIconPaths } from "./theme-icons";
 
 interface ProfileDocumentProps {
   projects: GeneratedProject[];
@@ -152,7 +153,7 @@ export function ProfileDocument({
   };
 
   return (
-    <html lang="en" data-bs-theme="light">
+    <html lang="en" data-bs-theme="light" data-theme-preference="light">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -217,24 +218,39 @@ export function ProfileDocument({
                 >
                   GitHub
                 </a>
-                <div
-                  className="theme-switcher"
-                  role="group"
-                  aria-label="Theme preference"
+                <button
+                  className="theme-toggle"
+                  type="button"
+                  aria-label="Current theme: Light. Switch to dark theme."
                 >
-                  {(["light", "dark"] as const).map((preference) => (
-                    <button
-                      className="theme-option"
-                      type="button"
-                      data-theme-preference={preference}
-                      aria-label={`Use ${preference} theme`}
-                      aria-pressed={preference === "light" ? "true" : "false"}
-                      key={preference}
-                    >
-                      {preference.slice(0, 1).toUpperCase()}
-                    </button>
-                  ))}
-                </div>
+                  <svg
+                    className="theme-toggle__icon theme-toggle__icon--sun"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    {sunFillIconPaths.map((iconPath) => (
+                      <path d={iconPath} key={iconPath} />
+                    ))}
+                  </svg>
+                  <svg
+                    className="theme-toggle__icon theme-toggle__icon--moon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="currentColor"
+                    aria-hidden="true"
+                    focusable="false"
+                    {...{ hidden: true }}
+                  >
+                    {moonStarsFillIconPaths.map((iconPath) => (
+                      <path d={iconPath} key={iconPath} />
+                    ))}
+                  </svg>
+                </button>
               </div>
             </div>
           </nav>
