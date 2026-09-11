@@ -1,5 +1,6 @@
 export type ProjectResourceField =
   | "home"
+  | "demo"
   | "playground"
   | "examples"
   | "api"
@@ -8,6 +9,7 @@ export type ProjectResourceField =
 
 export const projectResourceFields = [
   ["home", "Home"],
+  ["demo", "Demo"],
   ["playground", "Playground"],
   ["examples", "Examples"],
   ["api", "API"],

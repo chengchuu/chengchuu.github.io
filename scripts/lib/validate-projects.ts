@@ -31,6 +31,7 @@ const presetContracts = {
 
 const linkFields = [
   "home",
+  "demo",
   "playground",
   "examples",
   "github",
