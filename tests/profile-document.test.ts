@@ -32,6 +32,24 @@ test("displayVersion does not duplicate an existing v prefix", () => {
   assert.equal(displayVersion(null), null);
 });
 
+test("GitHub project cards render Demo before GitHub", () => {
+  const html = renderToStaticMarkup(
+    createElement(ProfileDocument, {
+      projects: [{
+        ...projectFixture,
+        category: "github",
+        demo: "https://example.com/demo/",
+      }],
+    }),
+  );
+  assert.match(html, /href="https:\/\/example\.com\/demo\/"[^>]*>Demo<\/a>/);
+  assert.ok(
+    html.indexOf('href="https://example.com/demo/"') <
+      html.indexOf('href="https://github.com/chengchuu/example"'),
+  );
+  assert.doesNotMatch(html, />Playground<\/a>|>Examples<\/a>/);
+});
+
 test("theme toggle and project filters expose accessible controls", () => {
   const html = renderToStaticMarkup(
     createElement(ProfileDocument, { projects: [] }),

@@ -20,7 +20,7 @@ test("all project identities are unique", () => {
 test("project resources use the canonical display order", () => {
   assert.deepEqual(
     projectResourceFields.map(([field]) => field),
-    ["home", "playground", "examples", "api", "github", "npm"],
+    ["home", "demo", "playground", "examples", "api", "github", "npm"],
   );
 });
 
@@ -34,4 +34,16 @@ test("required presets reject category and status changes", () => {
 
   assert.ok(errors.includes("Required preset value was modified: mazey.category"));
   assert.ok(errors.includes("Required preset value was modified: mazey.status"));
+});
+
+test("demo links reject invalid URLs and unsupported protocols", () => {
+  for (const [demo, message] of [
+    ["/relative-demo/", "is not a valid URL."],
+    ["javascript:alert(1)", "uses an unsupported protocol."],
+  ] as const) {
+    const candidates: ProjectConfig[] = projects.map((project) =>
+      project.slug === "vue-china-map" ? { ...project, demo } : project,
+    );
+    assert.ok(validateProjects(candidates).includes(`vue-china-map.demo ${message}`));
+  }
 });

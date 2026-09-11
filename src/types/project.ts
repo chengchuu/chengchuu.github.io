@@ -19,6 +19,7 @@ export interface ProjectConfig {
   status: ProjectStatus;
   featured?: boolean;
   home?: string;
+  demo?: string;
   playground?: string;
   examples?: string;
   github: string;

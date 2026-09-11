@@ -16,18 +16,27 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### WeChat Launch App
 
 - Slug: mazey-wechat-launch-app
+- Home — <https://chengchuu.github.io/mazey-wechat-launch-app/>
+- Playground — <https://chengchuu.github.io/mazey-wechat-launch-app/playground/>
+- API — <https://chengchuu.github.io/mazey-wechat-launch-app/api/>
 - GitHub — <https://github.com/chengchuu/mazey-wechat-launch-app>
 - npm — <https://www.npmjs.com/package/mazey-wechat-launch-app>
 
 ### Taro Utils
 
 - Slug: mazey-taro-utils
+- Home — <https://chengchuu.github.io/mazey-taro-utils/>
+- Playground — <https://chengchuu.github.io/mazey-taro-utils/playground/>
+- API — <https://chengchuu.github.io/mazey-taro-utils/api/>
 - GitHub — <https://github.com/chengchuu/mazey-taro-utils>
 - npm — <https://www.npmjs.com/package/mazey-taro-utils>
 
 ### Aliyun OSS CLI
 
 - Slug: aliyunoss-cli
+- Home — <https://chengchuu.github.io/aliyunoss-cli/>
+- Examples — <https://chengchuu.github.io/aliyunoss-cli/examples/>
+- API — <https://chengchuu.github.io/aliyunoss-cli/api/>
 - GitHub — <https://github.com/chengchuu/aliyunoss-cli>
 - npm — <https://www.npmjs.com/package/aliyunoss-cli>
 
@@ -43,6 +52,9 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### WordPress Utils
 
 - Slug: mazey-wordpress-utils
+- Home — <https://chengchuu.github.io/mazey-wordpress-utils/>
+- Playground — <https://chengchuu.github.io/mazey-wordpress-utils/playground/>
+- API — <https://chengchuu.github.io/mazey-wordpress-utils/api/>
 - GitHub — <https://github.com/chengchuu/mazey-wordpress-utils>
 - npm — <https://www.npmjs.com/package/mazey-wordpress-utils>
 
@@ -51,6 +63,9 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### GURL
 
 - Slug: gurl
+- Home — <https://chengchuu.github.io/gurl/>
+- Examples — <https://chengchuu.github.io/gurl/examples/>
+- API — <https://chengchuu.github.io/gurl/api/>
 - GitHub — <https://github.com/chengchuu/gurl>
 
 ### AsiaTZ
@@ -60,6 +75,20 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - Examples — <https://chengchuu.github.io/asiatz/examples/>
 - API — <https://chengchuu.github.io/asiatz/api/>
 - GitHub — <https://github.com/chengchuu/asiatz>
+
+## GitHub projects
+
+### vue-china-map
+
+- Slug: vue-china-map
+- Demo — <https://chengchuu.github.io/vue-china-map/>
+- GitHub — <https://github.com/chengchuu/vue-china-map>
+
+### bootstrap-blueprints
+
+- Slug: bootstrap-blueprints
+- Home — <https://i.mazey.net/bootstrap-blueprints/>
+- GitHub — <https://github.com/chengchuu/bootstrap-blueprints>
 
 ## Add a project link
 
