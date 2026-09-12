@@ -2,6 +2,8 @@ import type { MetadataStatus } from "../../src/types/project";
 
 export interface SourceMetadata {
   complete: boolean;
+  // A complete release listing can authoritatively clear cached release fields.
+  releaseResolved?: boolean;
   createdAt?: string | null;
   latestReleaseAt?: string | null;
   repositoryPushedAt?: string | null;
@@ -31,6 +33,11 @@ export function mergeSourceMetadata(
   };
 
   for (const source of sources) {
+    if (source.releaseResolved) {
+      merged.releaseResolved = true;
+      merged.latestReleaseAt = source.latestReleaseAt ?? null;
+      merged.latestVersion = source.latestVersion ?? null;
+    }
     for (const field of metadataFields) {
       const value = source[field];
       if (value !== null && value !== undefined) {
