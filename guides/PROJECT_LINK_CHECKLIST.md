@@ -58,6 +58,47 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - GitHub — <https://github.com/chengchuu/mazey-wordpress-utils>
 - npm — <https://www.npmjs.com/package/mazey-wordpress-utils>
 
+### Layer ESM
+
+- Slug: layer-esm
+- Home — <https://chengchuu.github.io/layer-esm/>
+- Playground — <https://chengchuu.github.io/layer-esm/playground/>
+- API — <https://chengchuu.github.io/layer-esm/api/>
+- GitHub — <https://github.com/chengchuu/layer-esm>
+- npm — <https://www.npmjs.com/package/layer-esm>
+
+### Dayspan Vuetify
+
+- Slug: mazey-dayspan-vuetify
+- Playground — <https://chengchuu.github.io/mazey-dayspan-vuetify/>
+- GitHub — <https://github.com/chengchuu/mazey-dayspan-vuetify>
+- npm — <https://www.npmjs.com/package/mazey-dayspan-vuetify>
+
+### Element UI
+
+- Slug: mazey-element-ui
+- Home — <https://chengchuu.github.io/mazey-element-ui/>
+- GitHub — <https://github.com/chengchuu/mazey-element-ui>
+- npm — <https://www.npmjs.com/package/mazey-element-ui>
+
+### SCP Next
+
+- Slug: scp-next
+- Home — <https://chengchuu.github.io/scp-next/>
+- Examples — <https://chengchuu.github.io/scp-next/examples/>
+- API — <https://chengchuu.github.io/scp-next/api/>
+- GitHub — <https://github.com/chengchuu/scp-next>
+- npm — <https://www.npmjs.com/package/scp-next>
+
+### Vue Screenfull
+
+- Slug: vue-screenfull
+- Home — <https://chengchuu.github.io/vue-screenfull/>
+- Playground — <https://chengchuu.github.io/vue-screenfull/playground/>
+- API — <https://chengchuu.github.io/vue-screenfull/api/>
+- GitHub — <https://github.com/chengchuu/vue-screenfull>
+- npm — <https://www.npmjs.com/package/vue-screenfull>
+
 ## Go projects
 
 ### GURL
@@ -89,6 +130,12 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - Slug: bootstrap-blueprints
 - Home — <https://i.mazey.net/bootstrap-blueprints/>
 - GitHub — <https://github.com/chengchuu/bootstrap-blueprints>
+
+## Profile README visibility
+
+Set `hideFromProfileReadme: true` on a project in `src/config/projects.ts` to omit it from the generated profile README. Omit the attribute or set it to `false` to show the project. Only boolean values are supported.
+
+This setting does not affect the homepage, metadata collection, or this checklist. The checklist is documentation only; the generator does not read settings from it. README categories with no visible projects are omitted. If all projects are hidden, the introduction and image remain without project tables.
 
 ## Add a project link
 
