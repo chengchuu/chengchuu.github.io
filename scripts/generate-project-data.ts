@@ -5,6 +5,7 @@ import type {
   ProjectMetadata,
 } from "../src/types/project";
 import { fetchJson, fetchText, settleInBatches } from "./lib/fetch";
+import { fetchGitHubReleases } from "./lib/github-releases";
 import { readJsonIfExists, writeJson } from "./lib/files";
 import {
   mergeSourceMetadata,
@@ -158,7 +159,7 @@ function preferCurrent(
   return current ?? previous ?? null;
 }
 
-async function collectProject(
+export async function collectProject(
   project: ProjectConfig,
   previous: GeneratedProject | undefined,
   metadataFetchedAt: string,
@@ -171,6 +172,8 @@ async function collectProject(
     tasks.push(() => fetchNpmMetadata(project.packageName!));
   } else if (project.category === "go" && project.modulePath) {
     tasks.push(() => fetchGoMetadata(project.modulePath!));
+  } else if (project.category === "github") {
+    tasks.push(() => fetchGitHubReleases(project.repository, githubHeaders()));
   }
 
   const results = await Promise.allSettled(tasks.map((task) => task()));
@@ -191,10 +194,12 @@ async function collectProject(
       (preferCurrent(merged.createdAt, previous?.createdAt) as string | null),
     latestReleaseAt:
       project.latestReleaseAtOverride ??
-      (preferCurrent(
-        merged.latestReleaseAt,
-        previous?.latestReleaseAt,
-      ) as string | null),
+      (merged.releaseResolved
+        ? merged.latestReleaseAt ?? null
+        : preferCurrent(
+            merged.latestReleaseAt,
+            previous?.latestReleaseAt,
+          ) as string | null),
     repositoryPushedAt:
       project.updatedAtOverride ??
       (preferCurrent(
@@ -202,10 +207,9 @@ async function collectProject(
         previous?.repositoryPushedAt,
       ) as string | null),
     metadataFetchedAt,
-    latestVersion: preferCurrent(
-      merged.latestVersion,
-      previous?.latestVersion,
-    ) as string | null,
+    latestVersion: merged.releaseResolved
+      ? merged.latestVersion ?? null
+      : preferCurrent(merged.latestVersion, previous?.latestVersion) as string | null,
     primaryLanguage: preferCurrent(
       merged.primaryLanguage,
       previous?.primaryLanguage,
@@ -268,4 +272,6 @@ async function main(): Promise<void> {
   console.log(`Generated metadata for ${generatedProjects.length} projects.`, summary);
 }
 
-void main();
+if (require.main === module) {
+  void main();
+}
