@@ -8,7 +8,7 @@ import {
   moonStarsFillIconPaths,
   sunFillIconPaths,
 } from "../src/site/theme-icons";
-import { escapeMarkdown } from "./lib/format";
+import { validateProfileReadme } from "./lib/profile-readme";
 import { defaultReadmePath, distDir, requiredImageNames, rootDir, sourceImagesDir } from "./lib/paths";
 import { hasLightThemeRoot } from "./lib/theme-markup";
 
@@ -196,21 +196,7 @@ for (const imageName of requiredImageNames) {
 }
 
 const readme = await readFile(defaultReadmePath, "utf8");
-if (
-  !readme.includes("| Project | Links | Created | Latest release |") ||
-  !readme.includes("|:---|:---|:---|:---|")
-) {
-  errors.push("Generated README does not use the required table columns.");
-}
-if (readme.includes("| Status |") || readme.includes("| Relationship |")) {
-  errors.push("Generated README contains an unsupported table column.");
-}
-
-for (const project of projects) {
-  if (!readme.includes(`| ${escapeMarkdown(project.name)} |`)) {
-    errors.push(`Generated README is missing configured project: ${project.name}`);
-  }
-}
+errors.push(...validateProfileReadme(readme, projects));
 
 const trackedFiles = execFileSync("git", ["ls-files", "-z"], {
   cwd: rootDir,

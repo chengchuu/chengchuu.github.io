@@ -224,6 +224,22 @@ export async function collectProject(
   };
 }
 
+export function fallbackProject(
+  project: ProjectConfig,
+  previous: GeneratedProject | undefined,
+  metadataFetchedAt: string,
+): GeneratedProject {
+  const fallback = { ...(previous ?? emptyMetadata) };
+  // Visibility belongs to current configuration, never the retained cache.
+  delete (fallback as Partial<GeneratedProject>).hideFromProfileReadme;
+  return {
+    ...fallback,
+    ...project,
+    metadataFetchedAt,
+    metadataStatus: previous ? "partial" : "unavailable",
+  };
+}
+
 async function main(): Promise<void> {
   const previousProjects = await readJsonIfExists<GeneratedProject[]>(
     generatedDataPath,
@@ -251,13 +267,7 @@ async function main(): Promise<void> {
       throw result.reason;
     }
 
-    const previous = previousBySlug.get(project.slug);
-    return {
-      ...(previous ?? emptyMetadata),
-      ...project,
-      metadataFetchedAt,
-      metadataStatus: previous ? "partial" : "unavailable",
-    } satisfies GeneratedProject;
+    return fallbackProject(project, previousBySlug.get(project.slug), metadataFetchedAt);
   });
 
   await writeJson(generatedDataPath, generatedProjects);

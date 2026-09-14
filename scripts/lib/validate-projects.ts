@@ -47,6 +47,15 @@ export function validateProjects(
   const repositories = new Set<string>();
 
   for (const project of candidateProjects) {
+    if (
+      "hideFromProfileReadme" in project &&
+      typeof project.hideFromProfileReadme !== "boolean"
+    ) {
+      errors.push(
+        `${project.slug}.hideFromProfileReadme must be a boolean.`,
+      );
+    }
+
     if ("relationship" in project) {
       errors.push(`${project.slug} contains unsupported relationship metadata.`);
     }

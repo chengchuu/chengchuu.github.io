@@ -18,6 +18,7 @@ export interface ProjectConfig {
   description?: string;
   status: ProjectStatus;
   featured?: boolean;
+  hideFromProfileReadme?: boolean;
   home?: string;
   demo?: string;
   playground?: string;

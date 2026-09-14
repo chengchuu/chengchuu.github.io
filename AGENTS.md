@@ -15,7 +15,7 @@ The sibling `../chengchuu/` repository owns the generated profile `README.md` an
 
 ## Source ownership
 
-- `src/config/projects.ts` is the only maintained project inventory. Mazey and AsiaTZ are required presets, and every configured project must appear on the generated homepage and in the profile README.
+- `src/config/projects.ts` is the only maintained project inventory. Mazey and AsiaTZ are required presets, and every configured project must appear on the generated homepage. Projects appear in the profile README unless `hideFromProfileReadme` is `true` in `src/config/projects.ts`.
 - `src/config/project-resources.ts` defines the shared resource labels and order: Home, Demo, Playground, Examples, API, GitHub, then npm. The homepage, generated README, and `guides/PROJECT_LINK_CHECKLIST.md` must use that order and omit unavailable resources.
 - `src/config/site.ts` owns the site identity, canonical origin, public asset paths, and theme settings. Access the storage key only through `siteConfig.theme.storageKey`.
 - `src/generated/projects.json` is tracked normalized metadata and the fallback for temporary upstream failures. Do not hand-maintain it as a second project list.
