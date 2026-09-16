@@ -5,7 +5,7 @@ const allowedProtocols = new Set(["http:", "https:"]);
 
 const presetContracts = {
   mazey: {
-    name: "Mazey",
+    name: "Mazey Utils",
     category: "npm",
     repository: "chengchuu/mazey",
     packageName: "mazey",

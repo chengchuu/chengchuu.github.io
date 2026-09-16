@@ -4,7 +4,7 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 
 ## npm projects
 
-### Mazey
+### Mazey Utils
 
 - Slug: mazey
 - Home — <https://chengchuu.github.io/mazey/>
@@ -12,6 +12,33 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API — <https://chengchuu.github.io/mazey/api/>
 - GitHub — <https://github.com/chengchuu/mazey>
 - npm — <https://www.npmjs.com/package/mazey>
+
+### Lazy Load Images
+
+- Slug: mazey-lazy-load-images
+- Home — <https://chengchuu.github.io/mazey-lazy-load-images/>
+- Playground — <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
+- API — <https://chengchuu.github.io/mazey-lazy-load-images/api/>
+- GitHub — <https://github.com/chengchuu/mazey-lazy-load-images>
+- npm — <https://www.npmjs.com/package/mazey-lazy-load-images>
+
+### Vue Screenfull
+
+- Slug: vue-screenfull
+- Home — <https://chengchuu.github.io/vue-screenfull/>
+- Playground — <https://chengchuu.github.io/vue-screenfull/playground/>
+- API — <https://chengchuu.github.io/vue-screenfull/api/>
+- GitHub — <https://github.com/chengchuu/vue-screenfull>
+- npm — <https://www.npmjs.com/package/vue-screenfull>
+
+### Layer ESM
+
+- Slug: layer-esm
+- Home — <https://chengchuu.github.io/layer-esm/>
+- Playground — <https://chengchuu.github.io/layer-esm/playground/>
+- API — <https://chengchuu.github.io/layer-esm/api/>
+- GitHub — <https://github.com/chengchuu/layer-esm>
+- npm — <https://www.npmjs.com/package/layer-esm>
 
 ### WeChat Launch App
 
@@ -40,15 +67,6 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - GitHub — <https://github.com/chengchuu/aliyunoss-cli>
 - npm — <https://www.npmjs.com/package/aliyunoss-cli>
 
-### Lazy Load Images
-
-- Slug: mazey-lazy-load-images
-- Home — <https://chengchuu.github.io/mazey-lazy-load-images/>
-- Playground — <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
-- API — <https://chengchuu.github.io/mazey-lazy-load-images/api/>
-- GitHub — <https://github.com/chengchuu/mazey-lazy-load-images>
-- npm — <https://www.npmjs.com/package/mazey-lazy-load-images>
-
 ### WordPress Utils
 
 - Slug: mazey-wordpress-utils
@@ -57,15 +75,6 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API — <https://chengchuu.github.io/mazey-wordpress-utils/api/>
 - GitHub — <https://github.com/chengchuu/mazey-wordpress-utils>
 - npm — <https://www.npmjs.com/package/mazey-wordpress-utils>
-
-### Layer ESM
-
-- Slug: layer-esm
-- Home — <https://chengchuu.github.io/layer-esm/>
-- Playground — <https://chengchuu.github.io/layer-esm/playground/>
-- API — <https://chengchuu.github.io/layer-esm/api/>
-- GitHub — <https://github.com/chengchuu/layer-esm>
-- npm — <https://www.npmjs.com/package/layer-esm>
 
 ### Dayspan Vuetify
 
@@ -89,15 +98,6 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API — <https://chengchuu.github.io/scp-next/api/>
 - GitHub — <https://github.com/chengchuu/scp-next>
 - npm — <https://www.npmjs.com/package/scp-next>
-
-### Vue Screenfull
-
-- Slug: vue-screenfull
-- Home — <https://chengchuu.github.io/vue-screenfull/>
-- Playground — <https://chengchuu.github.io/vue-screenfull/playground/>
-- API — <https://chengchuu.github.io/vue-screenfull/api/>
-- GitHub — <https://github.com/chengchuu/vue-screenfull>
-- npm — <https://www.npmjs.com/package/vue-screenfull>
 
 ## Go projects
 
