@@ -119,13 +119,13 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 
 ## GitHub projects
 
-### vue-china-map
+### Vue China Map
 
 - Slug: vue-china-map
 - Demo — <https://chengchuu.github.io/vue-china-map/>
 - GitHub — <https://github.com/chengchuu/vue-china-map>
 
-### bootstrap-blueprints
+### Bootstrap Blueprints
 
 - Slug: bootstrap-blueprints
 - Home — <https://i.mazey.net/bootstrap-blueprints/>

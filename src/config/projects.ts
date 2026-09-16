@@ -172,7 +172,7 @@ export const projects = [
   },
   {
     slug: "vue-china-map",
-    name: "vue-china-map",
+    name: "Vue China Map",
     category: "github",
     repository: "chengchuu/vue-china-map",
     description: "A Vue China map visualization powered by Vite and ECharts.",
@@ -182,7 +182,7 @@ export const projects = [
   },
   {
     slug: "bootstrap-blueprints",
-    name: "bootstrap-blueprints",
+    name: "Bootstrap Blueprints",
     category: "github",
     repository: "chengchuu/bootstrap-blueprints",
     description: "Standalone Bootstrap 3 learning examples.",
