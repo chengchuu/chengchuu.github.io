@@ -134,7 +134,7 @@ export const projects = [
   },
   {
     slug: "scp-next",
-    name: "SCP Next",
+    name: "SCP Next CLI",
     category: "npm",
     repository: "chengchuu/scp-next",
     packageName: "scp-next",

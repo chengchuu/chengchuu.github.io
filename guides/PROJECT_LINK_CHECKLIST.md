@@ -90,7 +90,7 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - GitHub — <https://github.com/chengchuu/mazey-element-ui>
 - npm — <https://www.npmjs.com/package/mazey-element-ui>
 
-### SCP Next
+### SCP Next CLI
 
 - Slug: scp-next
 - Home — <https://chengchuu.github.io/scp-next/>
