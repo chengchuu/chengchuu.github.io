@@ -190,4 +190,13 @@ export const projects = [
     home: "https://i.mazey.net/bootstrap-blueprints/",
     github: "https://github.com/chengchuu/bootstrap-blueprints",
   },
+  {
+    slug: "go-run-wechat-demo",
+    name: "Go WeChat Demo",
+    category: "github",
+    repository: "chengchuu/go-run-wechat-demo",
+    description: "A Wails desktop demo recreating a WeChat login screen with Go, React, and TypeScript.",
+    status: "active",
+    github: "https://github.com/chengchuu/go-run-wechat-demo",
+  },
 ] as const satisfies readonly ProjectConfig[];

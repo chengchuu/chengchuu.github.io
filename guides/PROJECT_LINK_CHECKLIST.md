@@ -131,6 +131,11 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - Home — <https://i.mazey.net/bootstrap-blueprints/>
 - GitHub — <https://github.com/chengchuu/bootstrap-blueprints>
 
+### Go WeChat Demo
+
+- Slug: go-run-wechat-demo
+- GitHub — <https://github.com/chengchuu/go-run-wechat-demo>
+
 ## Profile README visibility
 
 Set `hideFromProfileReadme: true` on a project in `src/config/projects.ts` to omit it from the generated profile README. Omit the attribute or set it to `false` to show the project. Only boolean values are supported.

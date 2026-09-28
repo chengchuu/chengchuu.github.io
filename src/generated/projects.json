@@ -337,5 +337,24 @@
     "stars": 7,
     "archived": false,
     "metadataStatus": "fresh"
+  },
+  {
+    "slug": "go-run-wechat-demo",
+    "name": "Go WeChat Demo",
+    "category": "github",
+    "repository": "chengchuu/go-run-wechat-demo",
+    "description": "A Wails desktop demo recreating a WeChat login screen with Go, React, and TypeScript.",
+    "status": "active",
+    "github": "https://github.com/chengchuu/go-run-wechat-demo",
+    "createdAt": "2017-11-03T13:50:55Z",
+    "latestReleaseAt": "2024-02-15T15:01:49Z",
+    "repositoryPushedAt": "2026-09-28T01:02:26Z",
+    "metadataFetchedAt": "2026-09-28T01:25:49.552Z",
+    "latestVersion": "v1.0.0",
+    "primaryLanguage": "Go",
+    "license": null,
+    "stars": 22,
+    "archived": false,
+    "metadataStatus": "fresh"
   }
 ]
