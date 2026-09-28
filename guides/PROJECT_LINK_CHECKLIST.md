@@ -7,134 +7,134 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### Mazey Utils
 
 - Slug: mazey
-- Home — <https://chengchuu.github.io/mazey/>
-- Playground — <https://chengchuu.github.io/mazey/playground/>
-- API — <https://chengchuu.github.io/mazey/api/>
-- GitHub — <https://github.com/chengchuu/mazey>
-- npm — <https://www.npmjs.com/package/mazey>
+- Home: <https://chengchuu.github.io/mazey/>
+- Playground: <https://chengchuu.github.io/mazey/playground/>
+- API: <https://chengchuu.github.io/mazey/api/>
+- GitHub: <https://github.com/chengchuu/mazey>
+- npm: <https://www.npmjs.com/package/mazey>
 
 ### Lazy Load Images
 
 - Slug: mazey-lazy-load-images
-- Home — <https://chengchuu.github.io/mazey-lazy-load-images/>
-- Playground — <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
-- API — <https://chengchuu.github.io/mazey-lazy-load-images/api/>
-- GitHub — <https://github.com/chengchuu/mazey-lazy-load-images>
-- npm — <https://www.npmjs.com/package/mazey-lazy-load-images>
+- Home: <https://chengchuu.github.io/mazey-lazy-load-images/>
+- Playground: <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
+- API: <https://chengchuu.github.io/mazey-lazy-load-images/api/>
+- GitHub: <https://github.com/chengchuu/mazey-lazy-load-images>
+- npm: <https://www.npmjs.com/package/mazey-lazy-load-images>
 
 ### Vue Screenfull
 
 - Slug: vue-screenfull
-- Home — <https://chengchuu.github.io/vue-screenfull/>
-- Playground — <https://chengchuu.github.io/vue-screenfull/playground/>
-- API — <https://chengchuu.github.io/vue-screenfull/api/>
-- GitHub — <https://github.com/chengchuu/vue-screenfull>
-- npm — <https://www.npmjs.com/package/vue-screenfull>
+- Home: <https://chengchuu.github.io/vue-screenfull/>
+- Playground: <https://chengchuu.github.io/vue-screenfull/playground/>
+- API: <https://chengchuu.github.io/vue-screenfull/api/>
+- GitHub: <https://github.com/chengchuu/vue-screenfull>
+- npm: <https://www.npmjs.com/package/vue-screenfull>
 
 ### Layer ESM
 
 - Slug: layer-esm
-- Home — <https://chengchuu.github.io/layer-esm/>
-- Playground — <https://chengchuu.github.io/layer-esm/playground/>
-- API — <https://chengchuu.github.io/layer-esm/api/>
-- GitHub — <https://github.com/chengchuu/layer-esm>
-- npm — <https://www.npmjs.com/package/layer-esm>
+- Home: <https://chengchuu.github.io/layer-esm/>
+- Playground: <https://chengchuu.github.io/layer-esm/playground/>
+- API: <https://chengchuu.github.io/layer-esm/api/>
+- GitHub: <https://github.com/chengchuu/layer-esm>
+- npm: <https://www.npmjs.com/package/layer-esm>
 
 ### WeChat Launch App
 
 - Slug: mazey-wechat-launch-app
-- Home — <https://chengchuu.github.io/mazey-wechat-launch-app/>
-- Playground — <https://chengchuu.github.io/mazey-wechat-launch-app/playground/>
-- API — <https://chengchuu.github.io/mazey-wechat-launch-app/api/>
-- GitHub — <https://github.com/chengchuu/mazey-wechat-launch-app>
-- npm — <https://www.npmjs.com/package/mazey-wechat-launch-app>
+- Home: <https://chengchuu.github.io/mazey-wechat-launch-app/>
+- Playground: <https://chengchuu.github.io/mazey-wechat-launch-app/playground/>
+- API: <https://chengchuu.github.io/mazey-wechat-launch-app/api/>
+- GitHub: <https://github.com/chengchuu/mazey-wechat-launch-app>
+- npm: <https://www.npmjs.com/package/mazey-wechat-launch-app>
 
 ### Taro Utils
 
 - Slug: mazey-taro-utils
-- Home — <https://chengchuu.github.io/mazey-taro-utils/>
-- Playground — <https://chengchuu.github.io/mazey-taro-utils/playground/>
-- API — <https://chengchuu.github.io/mazey-taro-utils/api/>
-- GitHub — <https://github.com/chengchuu/mazey-taro-utils>
-- npm — <https://www.npmjs.com/package/mazey-taro-utils>
+- Home: <https://chengchuu.github.io/mazey-taro-utils/>
+- Playground: <https://chengchuu.github.io/mazey-taro-utils/playground/>
+- API: <https://chengchuu.github.io/mazey-taro-utils/api/>
+- GitHub: <https://github.com/chengchuu/mazey-taro-utils>
+- npm: <https://www.npmjs.com/package/mazey-taro-utils>
 
 ### Aliyun OSS CLI
 
 - Slug: aliyunoss-cli
-- Home — <https://chengchuu.github.io/aliyunoss-cli/>
-- Examples — <https://chengchuu.github.io/aliyunoss-cli/examples/>
-- API — <https://chengchuu.github.io/aliyunoss-cli/api/>
-- GitHub — <https://github.com/chengchuu/aliyunoss-cli>
-- npm — <https://www.npmjs.com/package/aliyunoss-cli>
+- Home: <https://chengchuu.github.io/aliyunoss-cli/>
+- Examples: <https://chengchuu.github.io/aliyunoss-cli/examples/>
+- API: <https://chengchuu.github.io/aliyunoss-cli/api/>
+- GitHub: <https://github.com/chengchuu/aliyunoss-cli>
+- npm: <https://www.npmjs.com/package/aliyunoss-cli>
 
 ### WordPress Utils
 
 - Slug: mazey-wordpress-utils
-- Home — <https://chengchuu.github.io/mazey-wordpress-utils/>
-- Playground — <https://chengchuu.github.io/mazey-wordpress-utils/playground/>
-- API — <https://chengchuu.github.io/mazey-wordpress-utils/api/>
-- GitHub — <https://github.com/chengchuu/mazey-wordpress-utils>
-- npm — <https://www.npmjs.com/package/mazey-wordpress-utils>
+- Home: <https://chengchuu.github.io/mazey-wordpress-utils/>
+- Playground: <https://chengchuu.github.io/mazey-wordpress-utils/playground/>
+- API: <https://chengchuu.github.io/mazey-wordpress-utils/api/>
+- GitHub: <https://github.com/chengchuu/mazey-wordpress-utils>
+- npm: <https://www.npmjs.com/package/mazey-wordpress-utils>
 
 ### Dayspan Vuetify
 
 - Slug: mazey-dayspan-vuetify
-- Playground — <https://chengchuu.github.io/mazey-dayspan-vuetify/>
-- GitHub — <https://github.com/chengchuu/mazey-dayspan-vuetify>
-- npm — <https://www.npmjs.com/package/mazey-dayspan-vuetify>
+- Playground: <https://chengchuu.github.io/mazey-dayspan-vuetify/>
+- GitHub: <https://github.com/chengchuu/mazey-dayspan-vuetify>
+- npm: <https://www.npmjs.com/package/mazey-dayspan-vuetify>
 
 ### Element UI
 
 - Slug: mazey-element-ui
-- Home — <https://chengchuu.github.io/mazey-element-ui/>
-- GitHub — <https://github.com/chengchuu/mazey-element-ui>
-- npm — <https://www.npmjs.com/package/mazey-element-ui>
+- Home: <https://chengchuu.github.io/mazey-element-ui/>
+- GitHub: <https://github.com/chengchuu/mazey-element-ui>
+- npm: <https://www.npmjs.com/package/mazey-element-ui>
 
 ### SCP Next CLI
 
 - Slug: scp-next
-- Home — <https://chengchuu.github.io/scp-next/>
-- Examples — <https://chengchuu.github.io/scp-next/examples/>
-- API — <https://chengchuu.github.io/scp-next/api/>
-- GitHub — <https://github.com/chengchuu/scp-next>
-- npm — <https://www.npmjs.com/package/scp-next>
+- Home: <https://chengchuu.github.io/scp-next/>
+- Examples: <https://chengchuu.github.io/scp-next/examples/>
+- API: <https://chengchuu.github.io/scp-next/api/>
+- GitHub: <https://github.com/chengchuu/scp-next>
+- npm: <https://www.npmjs.com/package/scp-next>
 
 ## Go projects
 
 ### GURL
 
 - Slug: gurl
-- Home — <https://chengchuu.github.io/gurl/>
-- Examples — <https://chengchuu.github.io/gurl/examples/>
-- API — <https://chengchuu.github.io/gurl/api/>
-- GitHub — <https://github.com/chengchuu/gurl>
+- Home: <https://chengchuu.github.io/gurl/>
+- Examples: <https://chengchuu.github.io/gurl/examples/>
+- API: <https://chengchuu.github.io/gurl/api/>
+- GitHub: <https://github.com/chengchuu/gurl>
 
 ### AsiaTZ
 
 - Slug: asiatz
-- Home — <https://chengchuu.github.io/asiatz/>
-- Examples — <https://chengchuu.github.io/asiatz/examples/>
-- API — <https://chengchuu.github.io/asiatz/api/>
-- GitHub — <https://github.com/chengchuu/asiatz>
+- Home: <https://chengchuu.github.io/asiatz/>
+- Examples: <https://chengchuu.github.io/asiatz/examples/>
+- API: <https://chengchuu.github.io/asiatz/api/>
+- GitHub: <https://github.com/chengchuu/asiatz>
 
 ## GitHub projects
 
 ### Vue China Map
 
 - Slug: vue-china-map
-- Demo — <https://chengchuu.github.io/vue-china-map/>
-- GitHub — <https://github.com/chengchuu/vue-china-map>
+- Demo: <https://chengchuu.github.io/vue-china-map/>
+- GitHub: <https://github.com/chengchuu/vue-china-map>
 
 ### Bootstrap Blueprints
 
 - Slug: bootstrap-blueprints
-- Home — <https://i.mazey.net/bootstrap-blueprints/>
-- GitHub — <https://github.com/chengchuu/bootstrap-blueprints>
+- Home: <https://i.mazey.net/bootstrap-blueprints/>
+- GitHub: <https://github.com/chengchuu/bootstrap-blueprints>
 
 ### Go WeChat Demo
 
 - Slug: go-run-wechat-demo
-- GitHub — <https://github.com/chengchuu/go-run-wechat-demo>
+- GitHub: <https://github.com/chengchuu/go-run-wechat-demo>
 
 ## Profile README visibility
 
