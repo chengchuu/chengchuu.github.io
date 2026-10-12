@@ -13,15 +13,6 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - GitHub: <https://github.com/chengchuu/mazey>
 - npm: <https://www.npmjs.com/package/mazey>
 
-### Lazy Load Images
-
-- Slug: mazey-lazy-load-images
-- Home: <https://chengchuu.github.io/mazey-lazy-load-images/>
-- Playground: <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
-- API: <https://chengchuu.github.io/mazey-lazy-load-images/api/>
-- GitHub: <https://github.com/chengchuu/mazey-lazy-load-images>
-- npm: <https://www.npmjs.com/package/mazey-lazy-load-images>
-
 ### Vue Screenfull
 
 - Slug: vue-screenfull
@@ -30,6 +21,15 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API: <https://chengchuu.github.io/vue-screenfull/api/>
 - GitHub: <https://github.com/chengchuu/vue-screenfull>
 - npm: <https://www.npmjs.com/package/vue-screenfull>
+
+### Lazy Load Images
+
+- Slug: mazey-lazy-load-images
+- Home: <https://chengchuu.github.io/mazey-lazy-load-images/>
+- Playground: <https://chengchuu.github.io/mazey-lazy-load-images/playground/>
+- API: <https://chengchuu.github.io/mazey-lazy-load-images/api/>
+- GitHub: <https://github.com/chengchuu/mazey-lazy-load-images>
+- npm: <https://www.npmjs.com/package/mazey-lazy-load-images>
 
 ### Layer ESM
 
@@ -49,6 +49,15 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - GitHub: <https://github.com/chengchuu/mazey-wechat-launch-app>
 - npm: <https://www.npmjs.com/package/mazey-wechat-launch-app>
 
+### WordPress Utils
+
+- Slug: mazey-wordpress-utils
+- Home: <https://chengchuu.github.io/mazey-wordpress-utils/>
+- Playground: <https://chengchuu.github.io/mazey-wordpress-utils/playground/>
+- API: <https://chengchuu.github.io/mazey-wordpress-utils/api/>
+- GitHub: <https://github.com/chengchuu/mazey-wordpress-utils>
+- npm: <https://www.npmjs.com/package/mazey-wordpress-utils>
+
 ### Taro Utils
 
 - Slug: mazey-taro-utils
@@ -66,15 +75,6 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API: <https://chengchuu.github.io/aliyunoss-cli/api/>
 - GitHub: <https://github.com/chengchuu/aliyunoss-cli>
 - npm: <https://www.npmjs.com/package/aliyunoss-cli>
-
-### WordPress Utils
-
-- Slug: mazey-wordpress-utils
-- Home: <https://chengchuu.github.io/mazey-wordpress-utils/>
-- Playground: <https://chengchuu.github.io/mazey-wordpress-utils/playground/>
-- API: <https://chengchuu.github.io/mazey-wordpress-utils/api/>
-- GitHub: <https://github.com/chengchuu/mazey-wordpress-utils>
-- npm: <https://www.npmjs.com/package/mazey-wordpress-utils>
 
 ### Dayspan Vuetify
 
