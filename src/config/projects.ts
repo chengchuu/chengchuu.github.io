@@ -171,6 +171,19 @@ export const projects = [
     api: "https://chengchuu.github.io/asiatz/api/",
   },
   {
+    slug: "gmdtable",
+    name: "GMDTable",
+    category: "go",
+    repository: "tzfqh/gmdtable",
+    modulePath: "github.com/tzfqh/gmdtable",
+    description: "A Go package for converting ordered headers and map-backed rows into Markdown tables.",
+    status: "active",
+    home: "https://tzfqh.github.io/gmdtable/",
+    examples: "https://tzfqh.github.io/gmdtable/examples/",
+    api: "https://tzfqh.github.io/gmdtable/api/",
+    github: "https://github.com/tzfqh/gmdtable",
+  },
+  {
     slug: "vue-china-map",
     name: "Vue China Map",
     category: "github",
@@ -193,6 +206,7 @@ export const projects = [
   {
     slug: "go-run-wechat-demo",
     name: "Go WeChat Demo",
+    hideFromProfileReadme: true,
     category: "github",
     repository: "chengchuu/go-run-wechat-demo",
     description: "A Wails desktop demo recreating a WeChat login screen with Go, React, and TypeScript.",

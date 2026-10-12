@@ -299,6 +299,29 @@
     "metadataStatus": "fresh"
   },
   {
+    "slug": "gmdtable",
+    "name": "GMDTable",
+    "category": "go",
+    "repository": "tzfqh/gmdtable",
+    "modulePath": "github.com/tzfqh/gmdtable",
+    "description": "A Go package for converting ordered headers and map-backed rows into Markdown tables.",
+    "status": "active",
+    "home": "https://tzfqh.github.io/gmdtable/",
+    "examples": "https://tzfqh.github.io/gmdtable/examples/",
+    "api": "https://tzfqh.github.io/gmdtable/api/",
+    "github": "https://github.com/tzfqh/gmdtable",
+    "createdAt": "2024-01-02T13:38:03Z",
+    "latestReleaseAt": "2026-08-03T05:31:21Z",
+    "repositoryPushedAt": "2026-10-07T07:40:50Z",
+    "metadataFetchedAt": "2026-10-12T13:56:12.764Z",
+    "latestVersion": "v1.1.0",
+    "primaryLanguage": "Go",
+    "license": "MIT",
+    "stars": 0,
+    "archived": false,
+    "metadataStatus": "fresh"
+  },
+  {
     "slug": "vue-china-map",
     "name": "Vue China Map",
     "category": "github",
@@ -355,6 +378,7 @@
     "license": null,
     "stars": 22,
     "archived": false,
-    "metadataStatus": "fresh"
+    "metadataStatus": "fresh",
+    "hideFromProfileReadme": true
   }
 ]

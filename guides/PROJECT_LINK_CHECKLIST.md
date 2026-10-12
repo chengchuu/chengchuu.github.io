@@ -117,6 +117,14 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - API: <https://chengchuu.github.io/asiatz/api/>
 - GitHub: <https://github.com/chengchuu/asiatz>
 
+### GMDTable
+
+- Slug: gmdtable
+- Home: <https://tzfqh.github.io/gmdtable/>
+- Examples: <https://tzfqh.github.io/gmdtable/examples/>
+- API: <https://tzfqh.github.io/gmdtable/api/>
+- GitHub: <https://github.com/tzfqh/gmdtable>
+
 ## GitHub projects
 
 ### Vue China Map
