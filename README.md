@@ -50,6 +50,11 @@ The build creates or updates these artifacts:
 | `src/generated/projects.json`         | Retained project metadata used for fallback builds     |
 | `../chengchuu/README.md`              | Generated GitHub profile README                        |
 
+The profile README includes available Home, Demo, Playground, Examples, and API
+links, but omits GitHub and npm resource links. Projects without remaining links
+keep an empty Links cell. Homepage links are unchanged. Validation checks category
+headings and ordered table rows against generated project metadata.
+
 To write the profile README to another location, provide an explicit output path:
 
 ```bash

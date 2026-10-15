@@ -200,7 +200,7 @@ export const projects = [
     repository: "chengchuu/bootstrap-blueprints",
     description: "Standalone Bootstrap 3 learning examples.",
     status: "active",
-    home: "https://i.mazey.net/bootstrap-blueprints/",
+    home: "https://chengchuu.github.io/bootstrap-blueprints/",
     github: "https://github.com/chengchuu/bootstrap-blueprints",
   },
   {

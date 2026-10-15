@@ -136,7 +136,7 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### Bootstrap Blueprints
 
 - Slug: bootstrap-blueprints
-- Home: <https://i.mazey.net/bootstrap-blueprints/>
+- Home: <https://chengchuu.github.io/bootstrap-blueprints/>
 - GitHub: <https://github.com/chengchuu/bootstrap-blueprints>
 
 ### Go WeChat Demo
