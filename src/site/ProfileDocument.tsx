@@ -260,7 +260,7 @@ export function ProfileDocument({
             <div className="container">
               <div className="row align-items-center gy-5 gx-0 gx-sm-5">
                 <div className="col-lg-7">
-                  <p className="eyebrow">Full-Stack Developer</p>
+                  <p className="eyebrow">Software Engineer</p>
                   <h1 className="hero-title">Building useful software, end to end.</h1>
                   <p className="hero-copy">
                     I’m Cheng. I work across Go, Node.js, TypeScript, React,

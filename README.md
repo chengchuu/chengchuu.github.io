@@ -28,6 +28,12 @@ This command type-checks the project, runs the tests, fetches current project me
 
 ## Configure the site
 
+For PDFs that do not preserve fragment links, use
+https://chengchuu.github.io/?section=projects. With JavaScript enabled, the homepage
+navigates to Projects and replaces the alias with `#projects`, preserving other
+query parameters. Existing fragments take precedence. Without JavaScript, the
+complete homepage remains available. Use `#projects` for normal section links.
+
 Edit [`src/config/projects.ts`](src/config/projects.ts) to add or update projects. This file is the only maintained project inventory. Every configured project appears on the homepage and in the appropriate generated profile README table.
 
 Edit [`src/config/site.ts`](src/config/site.ts) for the site title, description, origin, theme settings, and public image paths. Keep the theme storage key centralized as `siteConfig.theme.storageKey`.

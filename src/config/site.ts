@@ -1,8 +1,8 @@
 export const siteConfig = {
   name: "Cheng",
-  title: "Cheng – Full-Stack Developer",
+  title: "Cheng – Software Engineer",
   description:
-    "Full-stack developer working with Go, Node.js, TypeScript, React, Vue, PHP, and developer automation.",
+    "Software engineer working with Go, Node.js, TypeScript, React, Vue, PHP, and developer automation.",
   origin: "https://chengchuu.github.io",
   basePath: "/",
   theme: {
