@@ -168,12 +168,12 @@ export async function collectProject(
     () => fetchGitHubMetadata(project),
   ];
 
-  // Contributions use repository metadata only, not upstream package releases.
+  // Contributions use upstream GitHub releases, not package registry releases.
   if (project.category === "npm" && project.packageName) {
     tasks.push(() => fetchNpmMetadata(project.packageName!));
   } else if (project.category === "go" && project.modulePath) {
     tasks.push(() => fetchGoMetadata(project.modulePath!));
-  } else if (project.category === "github") {
+  } else if (project.category === "github" || project.category === "contributions") {
     tasks.push(() => fetchGitHubReleases(project.repository, githubHeaders()));
   }
 

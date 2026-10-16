@@ -56,8 +56,9 @@ keep an empty Links cell. Homepage links are unchanged. Validation checks catego
 headings and ordered table rows against generated project metadata.
 
 Use `category: "contributions"` for upstream projects you have contributed to.
-They appear under the Contributions homepage filter without upstream dates or
-versions, and in a Project/Links/Description table before npm in the README. Do not infer
+They appear under the Contributions homepage filter with available upstream release
+versions, primary languages, and release dates, but no creation dates. The README
+uses a Project/Links/Description table before npm without dates or versions. Do not infer
 maintainership, contribution dates, or accepted pull requests from repository metadata.
 The Contributions Project column uses plain-text names; the Links column links each `owner/repository` identifier to its GitHub repository.
 

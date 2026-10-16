@@ -55,7 +55,7 @@ function sortProjectsByLatestRelease(
 
 function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
   const isContribution = project.category === "contributions";
-  const created = displayDate(project.createdAt);
+  const created = isContribution ? null : displayDate(project.createdAt);
   const released = displayDate(project.latestReleaseAt);
   const version = displayVersion(project.latestVersion);
   const searchText = [
@@ -87,7 +87,7 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
           {isContribution ? "Open-source project contributed to by Cheng." : "Open-source work maintained by Cheng."}
         </p>
       )}
-      {!isContribution && <div className="project-meta" aria-label={`${project.name} metadata`}>
+      <div className="project-meta" aria-label={`${project.name} metadata`}>
         {version || project.primaryLanguage ? (
           <div className="project-meta-row">
             {version ? <span>{version}</span> : null}
@@ -108,7 +108,7 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
             ) : null}
           </div>
         ) : null}
-      </div>}
+      </div>
       <div className="project-links" aria-label={`${project.name} resources`}>
         {projectResourceFields.map(([field, label]) => {
           const href = project[field];

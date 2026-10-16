@@ -101,10 +101,18 @@ test("contributions render a description table before npm without dates", () => 
   assert.ok(!renderProfileReadme([{ ...first, hideFromProfileReadme: true }]).includes("## Contributions"));
 });
 
-test("contributions collect repository metadata without package or release requests", async (t) => {
+test("contributions collect repository and stable release metadata without registry requests", async (t) => {
   const urls: string[] = [];
+  let releaseResponse: "found" | "empty" | "failed" = "found";
   t.mock.method(globalThis, "fetch", async (url: string) => {
     urls.push(String(url));
+    if (String(url).includes("/releases?")) {
+      if (releaseResponse === "failed") return new Response("unavailable", { status: 404 });
+      return Response.json(releaseResponse === "empty" ? [] : [
+        { draft: false, prerelease: true, tag_name: "v3.0.0-rc", published_at: "2026-02-01T00:00:00Z" },
+        { draft: false, prerelease: false, tag_name: "v2.0.0", published_at: "2026-01-01T00:00:00Z" },
+      ]);
+    }
     return Response.json({
       created_at: "2020-01-01T00:00:00Z", pushed_at: null,
       language: "TypeScript", license: null, stargazers_count: 0, archived: false,
@@ -112,10 +120,19 @@ test("contributions collect repository metadata without package or release reque
   });
   const config: ProjectConfig = { ...fixture, category: "contributions" };
   const result = await collectProject(config, undefined, "now");
-  assert.deepEqual(urls, ["https://api.github.com/repos/owner/fixture"]);
+  assert.deepEqual(urls, ["https://api.github.com/repos/owner/fixture", "https://api.github.com/repos/owner/fixture/releases?per_page=100&page=1"]);
   assert.equal(result.metadataStatus, "fresh");
-  assert.equal(result.latestReleaseAt, null);
-  assert.equal(result.latestVersion, null);
+  assert.equal(result.latestReleaseAt, "2026-01-01T00:00:00Z");
+  assert.equal(result.latestVersion, "v2.0.0");
+  releaseResponse = "failed";
+  const retained = await collectProject(config, result, "later");
+  assert.equal(retained.latestVersion, result.latestVersion);
+  assert.equal(retained.latestReleaseAt, result.latestReleaseAt);
+  assert.equal(retained.metadataStatus, "partial");
+  releaseResponse = "empty";
+  const empty = await collectProject(config, result, "later");
+  assert.equal(empty.latestVersion, null);
+  assert.equal(empty.latestReleaseAt, null);
   assert.equal(fallbackProject(config, result, "later").category, "contributions");
   assert.deepEqual(validateProjects([...projects, config]), []);
   assert.ok(validateProjects([...projects, { ...config, category: "invalid" } as unknown as ProjectConfig])

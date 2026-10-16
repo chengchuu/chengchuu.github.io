@@ -26,7 +26,7 @@ const projectFixture: GeneratedProject = {
   metadataStatus: "fresh",
 };
 
-test("contribution cards expose their filter category without upstream metadata or ownership claims", () => {
+test("contribution cards show upstream release metadata but omit creation dates and ownership claims", () => {
   const contribution: GeneratedProject = { ...projectFixture, slug: "react", name: "React", category: "contributions" };
   const html = renderToStaticMarkup(createElement(ProfileDocument, { projects: [contribution] }));
   assert.ok(html.includes('data-project-filter="contributions"'));
@@ -35,10 +35,24 @@ test("contribution cards expose their filter category without upstream metadata 
   assert.ok(html.includes('class="project-category">Contributions</div>'));
   assert.ok(html.includes("Open-source project contributed to by Cheng."));
   assert.ok(!html.includes("Open-source work maintained by Cheng."));
-  assert.ok(!html.includes('class="project-meta"'));
+  assert.ok(html.includes('class="project-meta"'));
   assert.ok(!html.includes("2023-07-27"));
-  assert.ok(!html.includes("v1.2.0"));
+  assert.ok(html.includes("v1.2.0"));
+  assert.ok(html.includes(">Go</span>"));
+  assert.ok(html.includes('Released <time dateTime="2026-08-01">2026-08-01</time>'));
   assert.ok(html.includes(`href="${contribution.github}"`));
+});
+
+test("contribution cards omit unavailable release fields and retain their undated ordering", () => {
+  const contribution: GeneratedProject = { ...projectFixture, slug: "contribution", category: "contributions", latestVersion: null, latestReleaseAt: null };
+  const html = renderToStaticMarkup(createElement(ProfileDocument, { projects: [contribution] }));
+  assert.ok(html.includes(">Go</span>"));
+  assert.ok(!html.includes("Created <time"));
+  assert.ok(!html.includes("Released <time"));
+  const ordered = renderToStaticMarkup(createElement(ProfileDocument, { projects: [
+    { ...contribution, latestReleaseAt: "2099-01-01T00:00:00Z" }, projectFixture,
+  ] }));
+  assert.ok(ordered.indexOf('data-project-slug="example"') < ordered.indexOf('data-project-slug="contribution"'));
 });
 
 test("displayVersion does not duplicate an existing v prefix", () => {
