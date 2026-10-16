@@ -398,7 +398,8 @@
     "license": "MIT",
     "stars": 251152,
     "archived": false,
-    "metadataStatus": "fresh"
+    "metadataStatus": "fresh",
+    "hideFromProfileReadme": true
   },
   {
     "slug": "go101",
@@ -417,6 +418,7 @@
     "license": "NOASSERTION",
     "stars": 6051,
     "archived": false,
-    "metadataStatus": "fresh"
+    "metadataStatus": "fresh",
+    "hideFromProfileReadme": true
   }
 ]

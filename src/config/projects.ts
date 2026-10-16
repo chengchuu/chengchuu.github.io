@@ -216,6 +216,7 @@ export const projects = [
   {
     slug: "react",
     name: "React",
+    hideFromProfileReadme: true,
     category: "contributions",
     repository: "react/react",
     description: "A JavaScript library for building user interfaces.",
@@ -225,6 +226,7 @@ export const projects = [
   {
     slug: "go101",
     name: "Go 101",
+    hideFromProfileReadme: true,
     category: "contributions",
     repository: "go101/go101",
     description: "A knowledge base for learning Go programming.",
