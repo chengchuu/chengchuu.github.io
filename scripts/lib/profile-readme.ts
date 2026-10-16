@@ -41,6 +41,12 @@ export function renderProfileReadme(projects: readonly ReadmeProject[]): string 
     "<!-- This file is generated. Edit project data in chengchuu.github.io/src/config/projects.ts. -->",
   ];
 
+  const contributions = visibleProjects.filter(project => project.category === "contributions");
+  if (contributions.length > 0) {
+    sections.push("", "## Contributions", "", "| Project | Links | Description |", "|:---|:---|:---|",
+      ...contributions.map(project => `| ${escapeMarkdown(project.name)} | [${escapeMarkdown(project.repository)}](${project.github}) | ${escapeMarkdown(project.description ?? "")} |`));
+  }
+
   const categories = [
     ["npm", "npm"],
     ["go", "Go Packages"],
@@ -77,7 +83,7 @@ export function validateProfileReadme(
     return [{ ...project, createdAt: metadata.createdAt, latestReleaseAt: metadata.latestReleaseAt }];
   });
   const lines = readme.split(/\r?\n/);
-  if (configuredProjects.some(isProfileReadmeVisible) && (
+  if (configuredProjects.some(project => isProfileReadmeVisible(project) && project.category !== "contributions") && (
     !lines.includes("| Project | Links | Created | Latest release |") ||
     !lines.includes("|:---|:---|:---|:---|")
   )) {
@@ -90,7 +96,7 @@ export function validateProfileReadme(
     errors.push("Generated README contains excluded GitHub or npm resource links.");
   }
   // Compare the generated table contract, not the introduction or line endings.
-  const isTableLine = (line: string) => line.startsWith("## ") || line.startsWith("|");
+  const isTableLine = (line: string) => line.startsWith("## ") || line.startsWith("|") || line.startsWith("- ");
   const actual = lines.filter(isTableLine);
   const expected = renderProfileReadme(expectedProjects).split("\n").filter(isTableLine);
   if (actual.length !== expected.length || actual.some((line, index) => line !== expected[index])) {

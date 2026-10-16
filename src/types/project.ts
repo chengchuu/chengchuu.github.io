@@ -1,4 +1,4 @@
-export type ProjectCategory = "npm" | "go" | "github";
+export type ProjectCategory = "npm" | "go" | "github" | "contributions";
 
 export type ProjectStatus =
   | "active"

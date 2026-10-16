@@ -72,6 +72,56 @@ test("projects without remaining resources retain an empty Links cell without co
   assert.deepEqual(validateProfileReadme(readme, [project]), []);
 });
 
+test("contributions render a description table before npm without dates", () => {
+  const first: GeneratedProject = { ...fixture, category: "contributions", name: "React", repository: "react/react", github: "https://github.com/react/react", description: "UI library" };
+  const second = { ...first, slug: "go101", name: "Go 101", repository: "go101/go101", github: "https://github.com/go101/go101", description: "Learn Go | examples" };
+  const inputs = [first, second];
+  const readme = renderProfileReadme(inputs);
+  const firstRow = "| React | [react/react](https://github.com/react/react) | UI library |\n";
+  const rows = firstRow + "| Go 101 | [go101/go101](https://github.com/go101/go101) | Learn Go \\| examples |\n";
+  assert.ok(readme.endsWith("## Contributions\n\n| Project | Links | Description |\n|:---|:---|:---|\n" + rows));
+  assert.ok(!readme.includes("Created"));
+  assert.ok(!readme.includes("Latest release"));
+  assert.ok(!readme.includes("2020-01-01"));
+  assert.deepEqual(validateProfileReadme(readme, inputs), []);
+  for (const invalid of [
+    readme.replace(firstRow, ""),
+    readme + firstRow,
+    readme.replace("https://github.com/react/react", "https://github.com/other/react"),
+    readme.replace(rows, rows.trimEnd().split("\n").reverse().join("\n") + "\n"),
+    readme.replace("UI library", "Wrong description"),
+    readme.replace("| Project | Links | Description |", "| Project | Description | Links |"),
+    readme.replace("| React |", "| [React](https://github.com/react/react) |"),
+  ]) assert.ok(validateProfileReadme(invalid, inputs).length > 0);
+  const npm: GeneratedProject = { ...fixture, category: "npm", packageName: "fixture" };
+  const mixed = renderProfileReadme([first, npm, second]);
+  assert.ok(mixed.indexOf("## Contributions") < mixed.indexOf("## npm"));
+  assert.ok(mixed.endsWith(renderProfileReadme([npm]).split("## npm")[1]!));
+  assert.deepEqual(validateProfileReadme(mixed, [first, npm, second]), []);
+  assert.ok(!renderProfileReadme([{ ...first, hideFromProfileReadme: true }]).includes("## Contributions"));
+});
+
+test("contributions collect repository metadata without package or release requests", async (t) => {
+  const urls: string[] = [];
+  t.mock.method(globalThis, "fetch", async (url: string) => {
+    urls.push(String(url));
+    return Response.json({
+      created_at: "2020-01-01T00:00:00Z", pushed_at: null,
+      language: "TypeScript", license: null, stargazers_count: 0, archived: false,
+    });
+  });
+  const config: ProjectConfig = { ...fixture, category: "contributions" };
+  const result = await collectProject(config, undefined, "now");
+  assert.deepEqual(urls, ["https://api.github.com/repos/owner/fixture"]);
+  assert.equal(result.metadataStatus, "fresh");
+  assert.equal(result.latestReleaseAt, null);
+  assert.equal(result.latestVersion, null);
+  assert.equal(fallbackProject(config, result, "later").category, "contributions");
+  assert.deepEqual(validateProjects([...projects, config]), []);
+  assert.ok(validateProjects([...projects, { ...config, category: "invalid" } as unknown as ProjectConfig])
+    .includes("fixture has an unsupported category."));
+});
+
 test("empty categories are omitted and all-hidden output retains the introduction", () => {
   const hidden = { ...fixture, hideFromProfileReadme: true };
   const mixed = renderProfileReadme([

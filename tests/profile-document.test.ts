@@ -26,6 +26,21 @@ const projectFixture: GeneratedProject = {
   metadataStatus: "fresh",
 };
 
+test("contribution cards expose their filter category without upstream metadata or ownership claims", () => {
+  const contribution: GeneratedProject = { ...projectFixture, slug: "react", name: "React", category: "contributions" };
+  const html = renderToStaticMarkup(createElement(ProfileDocument, { projects: [contribution] }));
+  assert.ok(html.includes('data-project-filter="contributions"'));
+  assert.ok(html.indexOf('data-project-filter="contributions"') < html.indexOf('data-project-filter="npm"'));
+  assert.ok(html.includes('data-project-category="contributions"'));
+  assert.ok(html.includes('class="project-category">Contributions</div>'));
+  assert.ok(html.includes("Open-source project contributed to by Cheng."));
+  assert.ok(!html.includes("Open-source work maintained by Cheng."));
+  assert.ok(!html.includes('class="project-meta"'));
+  assert.ok(!html.includes("2023-07-27"));
+  assert.ok(!html.includes("v1.2.0"));
+  assert.ok(html.includes(`href="${contribution.github}"`));
+});
+
 test("displayVersion does not duplicate an existing v prefix", () => {
   assert.equal(displayVersion("1.2.3"), "v1.2.3");
   assert.equal(displayVersion("v1.2.3"), "v1.2.3");

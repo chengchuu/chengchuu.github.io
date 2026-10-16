@@ -41,7 +41,7 @@ function sortProjectsByLatestRelease(
     .map((project, index) => ({
       index,
       project,
-      timestamp: releaseTimestamp(project.latestReleaseAt),
+      timestamp: releaseTimestamp(project.category === "contributions" ? null : project.latestReleaseAt),
     }))
     .sort((left, right) => {
       if (left.timestamp !== right.timestamp) {
@@ -54,6 +54,7 @@ function sortProjectsByLatestRelease(
 }
 
 function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
+  const isContribution = project.category === "contributions";
   const created = displayDate(project.createdAt);
   const released = displayDate(project.latestReleaseAt);
   const version = displayVersion(project.latestVersion);
@@ -76,17 +77,17 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
       data-project-slug={project.slug}
     >
       <div className="project-category">
-        {project.category === "go" ? "Go package" : project.category}
+        {isContribution ? "Contributions" : project.category === "go" ? "Go package" : project.category}
       </div>
       <h3 className="project-name">{project.name}</h3>
       {project.description ? (
         <p className="project-description">{project.description}</p>
       ) : (
         <p className="project-description">
-          Open-source work maintained by Cheng.
+          {isContribution ? "Open-source project contributed to by Cheng." : "Open-source work maintained by Cheng."}
         </p>
       )}
-      <div className="project-meta" aria-label={`${project.name} metadata`}>
+      {!isContribution && <div className="project-meta" aria-label={`${project.name} metadata`}>
         {version || project.primaryLanguage ? (
           <div className="project-meta-row">
             {version ? <span>{version}</span> : null}
@@ -107,7 +108,7 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
             ) : null}
           </div>
         ) : null}
-      </div>
+      </div>}
       <div className="project-links" aria-label={`${project.name} resources`}>
         {projectResourceFields.map(([field, label]) => {
           const href = project[field];
@@ -312,6 +313,7 @@ export function ProfileDocument({
                 >
                   {[
                     ["all", "All"],
+                    ["contributions", "Contributions"],
                     ["npm", "npm"],
                     ["go", "Go"],
                     ["github", "GitHub"],

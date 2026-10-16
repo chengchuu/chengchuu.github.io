@@ -144,6 +144,18 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 - Slug: go-run-wechat-demo
 - GitHub: <https://github.com/chengchuu/go-run-wechat-demo>
 
+## Contributions
+
+### React
+
+- Slug: react
+- GitHub: <https://github.com/react/react>
+
+### Go 101
+
+- Slug: go101
+- GitHub: <https://github.com/go101/go101>
+
 ## Profile README visibility
 
 Set `hideFromProfileReadme: true` on a project in `src/config/projects.ts` to omit it from the generated profile README. Omit the attribute or set it to `false` to show the project. Only boolean values are supported.

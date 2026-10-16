@@ -47,6 +47,9 @@ export function validateProjects(
   const repositories = new Set<string>();
 
   for (const project of candidateProjects) {
+    if (!["npm", "go", "github", "contributions"].includes(project.category)) {
+      errors.push(`${project.slug} has an unsupported category.`);
+    }
     if (
       "hideFromProfileReadme" in project &&
       typeof project.hideFromProfileReadme !== "boolean"
