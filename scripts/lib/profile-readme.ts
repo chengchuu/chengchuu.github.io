@@ -2,12 +2,15 @@ import { projectResourceFields } from "../../src/config/project-resources";
 import type { GeneratedProject, ProjectConfig } from "../../src/types/project";
 import { escapeMarkdown, formatDate } from "./format";
 
+type ReadmeProject = ProjectConfig & Pick<GeneratedProject, "createdAt" | "latestReleaseAt">;
+
 export function isProfileReadmeVisible(project: ProjectConfig): boolean {
   return project.hideFromProfileReadme !== true;
 }
 
-function linksFor(project: GeneratedProject): string {
+function linksFor(project: ProjectConfig): string {
   return projectResourceFields
+    .filter(([field]) => field !== "github" && field !== "npm")
     .flatMap(([field, label]) => {
       const href = project[field];
       return href ? [`[${label}](${href})`] : [];
@@ -15,7 +18,7 @@ function linksFor(project: GeneratedProject): string {
     .join(" · ");
 }
 
-function table(projects: GeneratedProject[]): string {
+function table(projects: ReadmeProject[]): string {
   return [
     "| Project | Links | Created | Latest release |",
     "|:---|:---|:---|:---|",
@@ -26,7 +29,7 @@ function table(projects: GeneratedProject[]): string {
   ].join("\n");
 }
 
-export function renderProfileReadme(projects: GeneratedProject[]): string {
+export function renderProfileReadme(projects: readonly ReadmeProject[]): string {
   const visibleProjects = projects.filter(isProfileReadmeVisible);
   const sections = [
     "# Hi, I'm Cheng 👋",
@@ -37,6 +40,12 @@ export function renderProfileReadme(projects: GeneratedProject[]): string {
     "",
     "<!-- This file is generated. Edit project data in chengchuu.github.io/src/config/projects.ts. -->",
   ];
+
+  const contributions = visibleProjects.filter(project => project.category === "contributions");
+  if (contributions.length > 0) {
+    sections.push("", "## Contributions", "", "| Project | Links | Description |", "|:---|:---|:---|",
+      ...contributions.map(project => `| ${escapeMarkdown(project.name)} | [${escapeMarkdown(project.repository)}](${project.github}) | ${escapeMarkdown(project.description ?? "")} |`));
+  }
 
   const categories = [
     ["npm", "npm"],
@@ -60,11 +69,21 @@ export function renderProfileReadme(projects: GeneratedProject[]): string {
 
 export function validateProfileReadme(
   readme: string,
-  projects: readonly ProjectConfig[],
+  projects: readonly GeneratedProject[],
+  configuredProjects: readonly ProjectConfig[] = projects,
 ): string[] {
   const errors: string[] = [];
+  const metadataBySlug = new Map(projects.map(project => [project.slug, project]));
+  const expectedProjects = configuredProjects.flatMap(project => {
+    const metadata = metadataBySlug.get(project.slug);
+    if (!metadata) {
+      errors.push(`Generated metadata is missing configured project: ${project.slug}`);
+      return [];
+    }
+    return [{ ...project, createdAt: metadata.createdAt, latestReleaseAt: metadata.latestReleaseAt }];
+  });
   const lines = readme.split(/\r?\n/);
-  if (projects.some(isProfileReadmeVisible) && (
+  if (configuredProjects.some(project => isProfileReadmeVisible(project) && project.category !== "contributions") && (
     !lines.includes("| Project | Links | Created | Latest release |") ||
     !lines.includes("|:---|:---|:---|:---|")
   )) {
@@ -73,16 +92,15 @@ export function validateProfileReadme(
   if (readme.includes("| Status |") || readme.includes("| Relationship |")) {
     errors.push("Generated README contains an unsupported table column.");
   }
-  for (const project of projects) {
-    const present = lines.some(line =>
-      line.startsWith(`| ${escapeMarkdown(project.name)} |`) &&
-      line.includes(`[GitHub](${project.github})`),
-    );
-    if (isProfileReadmeVisible(project) && !present) {
-      errors.push(`Generated README is missing configured project: ${project.name}`);
-    } else if (!isProfileReadmeVisible(project) && present) {
-      errors.push(`Generated README contains hidden project: ${project.name}`);
-    }
+  if (/\[(?:GitHub|npm)\]\(/.test(readme)) {
+    errors.push("Generated README contains excluded GitHub or npm resource links.");
+  }
+  // Compare the generated table contract, not the introduction or line endings.
+  const isTableLine = (line: string) => line.startsWith("## ") || line.startsWith("|") || line.startsWith("- ");
+  const actual = lines.filter(isTableLine);
+  const expected = renderProfileReadme(expectedProjects).split("\n").filter(isTableLine);
+  if (actual.length !== expected.length || actual.some((line, index) => line !== expected[index])) {
+    errors.push("Generated README tables do not match the expected categories and ordered project rows.");
   }
   return errors;
 }

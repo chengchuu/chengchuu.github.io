@@ -136,13 +136,25 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 ### Bootstrap Blueprints
 
 - Slug: bootstrap-blueprints
-- Home: <https://i.mazey.net/bootstrap-blueprints/>
+- Home: <https://chengchuu.github.io/bootstrap-blueprints/>
 - GitHub: <https://github.com/chengchuu/bootstrap-blueprints>
 
 ### Go WeChat Demo
 
 - Slug: go-run-wechat-demo
 - GitHub: <https://github.com/chengchuu/go-run-wechat-demo>
+
+## Contributions
+
+### React
+
+- Slug: react
+- GitHub: <https://github.com/react/react>
+
+### Go 101
+
+- Slug: go101
+- GitHub: <https://github.com/go101/go101>
 
 ## Profile README visibility
 

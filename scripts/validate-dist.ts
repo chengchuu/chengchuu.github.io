@@ -9,6 +9,7 @@ import {
   sunFillIconPaths,
 } from "../src/site/theme-icons";
 import { validateProfileReadme } from "./lib/profile-readme";
+import { readGeneratedProjects } from "./lib/project-data";
 import { defaultReadmePath, distDir, requiredImageNames, rootDir, sourceImagesDir } from "./lib/paths";
 import { hasLightThemeRoot } from "./lib/theme-markup";
 
@@ -196,7 +197,7 @@ for (const imageName of requiredImageNames) {
 }
 
 const readme = await readFile(defaultReadmePath, "utf8");
-errors.push(...validateProfileReadme(readme, projects));
+errors.push(...validateProfileReadme(readme, await readGeneratedProjects(), projects));
 
 const trackedFiles = execFileSync("git", ["ls-files", "-z"], {
   cwd: rootDir,

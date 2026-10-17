@@ -30,9 +30,113 @@ test("README visibility defaults to shown and retains visible order and resource
   ];
   const readme = renderProfileReadme(inputs);
   assert.deepEqual(rowNames(readme), ["Fixture", "Shown"]);
-  assert.ok(readme.includes("[Demo](https://example.com/demo/) · [GitHub](https://github.com/owner/fixture)"));
+  assert.ok(readme.includes("| [Demo](https://example.com/demo/) |"));
   assert.deepEqual(validateProfileReadme(readme, inputs), []);
   assert.equal(inputs.length, 3);
+});
+
+test("README excludes GitHub and npm resources without changing homepage links", () => {
+  const project = {
+    ...fixture,
+    home: "https://example.com/",
+    playground: "https://example.com/playground/",
+    examples: "https://github.com/owner/fixture/tree/main/examples",
+    api: "https://example.com/api/",
+    npm: "https://www.npmjs.com/package/fixture",
+  };
+  const readme = renderProfileReadme([project]);
+  assert.ok(readme.includes([
+    `[Home](${project.home})`, `[Demo](${project.demo})`,
+    `[Playground](${project.playground})`, `[Examples](${project.examples})`,
+    `[API](${project.api})`,
+  ].join(" · ")));
+  assert.ok(!readme.includes("[GitHub]("));
+  assert.ok(!readme.includes("[npm]("));
+  assert.deepEqual(validateProfileReadme(readme, [project]), []);
+  const html = renderToStaticMarkup(createElement(ProfileDocument, { projects: [project] }));
+  assert.ok(html.includes(`href="${project.github}"`));
+  assert.ok(html.includes(`href="${project.npm}"`));
+  for (const resource of ["GitHub", "npm"]) {
+    const invalid = readme.replace("| [Home]", `| [${resource}](https://example.com/) · [Home]`);
+    assert.ok(validateProfileReadme(invalid, [project])
+      .includes("Generated README contains excluded GitHub or npm resource links."));
+  }
+});
+
+test("projects without remaining resources retain an empty Links cell without comments", () => {
+  const project = { ...fixture };
+  delete project.demo;
+  const readme = renderProfileReadme([project]);
+  assert.ok(readme.includes("| Fixture |  | 2020-01-01 | — |\n"));
+  assert.ok(!readme.includes("<!-- project:"));
+  assert.deepEqual(validateProfileReadme(readme, [project]), []);
+});
+
+test("contributions render a description table before npm without dates", () => {
+  const first: GeneratedProject = { ...fixture, category: "contributions", name: "React", repository: "react/react", github: "https://github.com/react/react", description: "UI library" };
+  const second = { ...first, slug: "go101", name: "Go 101", repository: "go101/go101", github: "https://github.com/go101/go101", description: "Learn Go | examples" };
+  const inputs = [first, second];
+  const readme = renderProfileReadme(inputs);
+  const firstRow = "| React | [react/react](https://github.com/react/react) | UI library |\n";
+  const rows = firstRow + "| Go 101 | [go101/go101](https://github.com/go101/go101) | Learn Go \\| examples |\n";
+  assert.ok(readme.endsWith("## Contributions\n\n| Project | Links | Description |\n|:---|:---|:---|\n" + rows));
+  assert.ok(!readme.includes("Created"));
+  assert.ok(!readme.includes("Latest release"));
+  assert.ok(!readme.includes("2020-01-01"));
+  assert.deepEqual(validateProfileReadme(readme, inputs), []);
+  for (const invalid of [
+    readme.replace(firstRow, ""),
+    readme + firstRow,
+    readme.replace("https://github.com/react/react", "https://github.com/other/react"),
+    readme.replace(rows, rows.trimEnd().split("\n").reverse().join("\n") + "\n"),
+    readme.replace("UI library", "Wrong description"),
+    readme.replace("| Project | Links | Description |", "| Project | Description | Links |"),
+    readme.replace("| React |", "| [React](https://github.com/react/react) |"),
+  ]) assert.ok(validateProfileReadme(invalid, inputs).length > 0);
+  const npm: GeneratedProject = { ...fixture, category: "npm", packageName: "fixture" };
+  const mixed = renderProfileReadme([first, npm, second]);
+  assert.ok(mixed.indexOf("## Contributions") < mixed.indexOf("## npm"));
+  assert.ok(mixed.endsWith(renderProfileReadme([npm]).split("## npm")[1]!));
+  assert.deepEqual(validateProfileReadme(mixed, [first, npm, second]), []);
+  assert.ok(!renderProfileReadme([{ ...first, hideFromProfileReadme: true }]).includes("## Contributions"));
+});
+
+test("contributions collect repository and stable release metadata without registry requests", async (t) => {
+  const urls: string[] = [];
+  let releaseResponse: "found" | "empty" | "failed" = "found";
+  t.mock.method(globalThis, "fetch", async (url: string) => {
+    urls.push(String(url));
+    if (String(url).includes("/releases?")) {
+      if (releaseResponse === "failed") return new Response("unavailable", { status: 404 });
+      return Response.json(releaseResponse === "empty" ? [] : [
+        { draft: false, prerelease: true, tag_name: "v3.0.0-rc", published_at: "2026-02-01T00:00:00Z" },
+        { draft: false, prerelease: false, tag_name: "v2.0.0", published_at: "2026-01-01T00:00:00Z" },
+      ]);
+    }
+    return Response.json({
+      created_at: "2020-01-01T00:00:00Z", pushed_at: null,
+      language: "TypeScript", license: null, stargazers_count: 0, archived: false,
+    });
+  });
+  const config: ProjectConfig = { ...fixture, category: "contributions" };
+  const result = await collectProject(config, undefined, "now");
+  assert.deepEqual(urls, ["https://api.github.com/repos/owner/fixture", "https://api.github.com/repos/owner/fixture/releases?per_page=100&page=1"]);
+  assert.equal(result.metadataStatus, "fresh");
+  assert.equal(result.latestReleaseAt, "2026-01-01T00:00:00Z");
+  assert.equal(result.latestVersion, "v2.0.0");
+  releaseResponse = "failed";
+  const retained = await collectProject(config, result, "later");
+  assert.equal(retained.latestVersion, result.latestVersion);
+  assert.equal(retained.latestReleaseAt, result.latestReleaseAt);
+  assert.equal(retained.metadataStatus, "partial");
+  releaseResponse = "empty";
+  const empty = await collectProject(config, result, "later");
+  assert.equal(empty.latestVersion, null);
+  assert.equal(empty.latestReleaseAt, null);
+  assert.equal(fallbackProject(config, result, "later").category, "contributions");
+  assert.deepEqual(validateProjects([...projects, config]), []);
+  assert.ok(validateProjects([...projects, { ...config, category: "invalid" } as unknown as ProjectConfig])
+    .includes("fixture has an unsupported category."));
 });
 
 test("empty categories are omitted and all-hidden output retains the introduction", () => {
@@ -56,9 +160,9 @@ test("empty categories are omitted and all-hidden output retains the introductio
 test("README validation rejects hidden rows, missing visible rows, and missing headers", () => {
   const hidden = { ...fixture, hideFromProfileReadme: true };
   assert.ok(validateProfileReadme(renderProfileReadme([fixture]), [hidden])
-    .includes("Generated README contains hidden project: Fixture"));
+    .some(error => error.includes("ordered project rows")));
   const errors = validateProfileReadme(renderProfileReadme([]), [fixture]);
-  assert.ok(errors.includes("Generated README is missing configured project: Fixture"));
+  assert.ok(errors.some(error => error.includes("ordered project rows")));
   assert.ok(errors.includes("Generated README does not use the required table columns."));
   assert.deepEqual(validateProfileReadme(renderProfileReadme([fixture]).replaceAll("\n", "\r\n"), [fixture]), []);
 });
@@ -83,6 +187,7 @@ test("README validation distinguishes projects with the same display name", () =
     slug: "hidden",
     repository: "owner/hidden",
     github: "https://github.com/owner/hidden",
+    demo: "https://example.com/hidden/",
     hideFromProfileReadme: true,
   };
   const inputs = [visible, hidden];
@@ -90,10 +195,63 @@ test("README validation distinguishes projects with the same display name", () =
   assert.deepEqual(validateProfileReadme(renderProfileReadme(inputs), inputs), []);
 
   const wrongRow = renderProfileReadme([{ ...hidden, hideFromProfileReadme: false }]);
-  assert.deepEqual(validateProfileReadme(wrongRow, inputs), [
-    "Generated README is missing configured project: Shared | name",
-    "Generated README contains hidden project: Shared | name",
-  ]);
+  assert.ok(validateProfileReadme(wrongRow, inputs).some(error => error.includes("ordered project rows")));
+});
+
+test("literal tables preserve content and reject row and category corruption", () => {
+  const second = { ...fixture, slug: "second", name: "Second" };
+  const inputs = [fixture, second];
+  const firstRow = "| Fixture | [Demo](https://example.com/demo/) | 2020-01-01 | — |";
+  const secondRow = "| Second | [Demo](https://example.com/demo/) | 2020-01-01 | — |";
+  const table = [
+    "## GitHub Projects", "",
+    "| Project | Links | Created | Latest release |",
+    "|:---|:---|:---|:---|", firstRow, secondRow, "",
+  ].join("\n");
+  assert.ok(renderProfileReadme(inputs).endsWith(table));
+  assert.deepEqual(validateProfileReadme(table, inputs), []);
+  for (const invalid of [
+    table.replace(firstRow + "\n", ""),
+    table + secondRow + "\n",
+    table.replace(firstRow, secondRow),
+    table.replace(firstRow + "\n" + secondRow, secondRow + "\n" + firstRow),
+    table.replace("## GitHub Projects", "## npm"),
+    table.replace("2020-01-01", "2021-01-01"),
+    table.replace("—", "2026-01-01"),
+    table.replace("https://example.com/demo/", "https://example.com/wrong/"),
+    table.replace(firstRow, firstRow.replace(" | — |", " | — <!-- project:fixture --> |")),
+  ]) {
+    assert.ok(validateProfileReadme(invalid, inputs).length > 0, invalid);
+  }
+  const identical = { ...fixture, slug: "identical" };
+  const repeated = renderProfileReadme([fixture, identical]);
+  assert.deepEqual(validateProfileReadme(repeated, [fixture, identical]), []);
+  assert.ok(validateProfileReadme(repeated.replace(firstRow + "\n", ""), [fixture, identical]).length > 0);
+});
+
+test("README validation uses canonical configuration rather than stale cached presentation", () => {
+  const readme = renderProfileReadme([fixture]);
+  const changed: ProjectConfig[] = [
+    { ...fixture, hideFromProfileReadme: true },
+    { ...fixture, name: "Renamed" },
+    { ...fixture, category: "go" },
+    { ...fixture, demo: "https://example.com/new/" },
+  ];
+  const withoutDemo = { ...fixture };
+  delete withoutDemo.demo;
+  changed.push(withoutDemo);
+  for (const config of changed) {
+    assert.ok(validateProfileReadme(readme, [fixture], [config]).length > 0);
+  }
+  const hiddenCache = { ...fixture, hideFromProfileReadme: true };
+  assert.ok(validateProfileReadme(renderProfileReadme([hiddenCache]), [hiddenCache], [fixture]).length > 0);
+  assert.deepEqual(validateProfileReadme(readme, [hiddenCache], [fixture]), []);
+  assert.ok(validateProfileReadme(readme, [fixture], []).length > 0);
+  assert.ok(validateProfileReadme(readme, [], [fixture])
+    .includes("Generated metadata is missing configured project: fixture"));
+  const second = { ...fixture, slug: "second", name: "Second" };
+  assert.ok(validateProfileReadme(renderProfileReadme([fixture, second]),
+    [fixture, second], [second, fixture]).length > 0);
 });
 
 test("collection and fallback use current visibility instead of cached flags", async (t) => {

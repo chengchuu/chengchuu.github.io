@@ -41,7 +41,7 @@ function sortProjectsByLatestRelease(
     .map((project, index) => ({
       index,
       project,
-      timestamp: releaseTimestamp(project.latestReleaseAt),
+      timestamp: releaseTimestamp(project.category === "contributions" ? null : project.latestReleaseAt),
     }))
     .sort((left, right) => {
       if (left.timestamp !== right.timestamp) {
@@ -54,7 +54,8 @@ function sortProjectsByLatestRelease(
 }
 
 function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
-  const created = displayDate(project.createdAt);
+  const isContribution = project.category === "contributions";
+  const created = isContribution ? null : displayDate(project.createdAt);
   const released = displayDate(project.latestReleaseAt);
   const version = displayVersion(project.latestVersion);
   const searchText = [
@@ -76,14 +77,14 @@ function ProjectCard({ project }: { project: GeneratedProject }): ReactElement {
       data-project-slug={project.slug}
     >
       <div className="project-category">
-        {project.category === "go" ? "Go package" : project.category}
+        {isContribution ? "Contributions" : project.category === "go" ? "Go package" : project.category}
       </div>
       <h3 className="project-name">{project.name}</h3>
       {project.description ? (
         <p className="project-description">{project.description}</p>
       ) : (
         <p className="project-description">
-          Open-source work maintained by Cheng.
+          {isContribution ? "Open-source project contributed to by Cheng." : "Open-source work maintained by Cheng."}
         </p>
       )}
       <div className="project-meta" aria-label={`${project.name} metadata`}>
@@ -260,7 +261,7 @@ export function ProfileDocument({
             <div className="container">
               <div className="row align-items-center gy-5 gx-0 gx-sm-5">
                 <div className="col-lg-7">
-                  <p className="eyebrow">Full-Stack Developer</p>
+                  <p className="eyebrow">Software Engineer</p>
                   <h1 className="hero-title">Building useful software, end to end.</h1>
                   <p className="hero-copy">
                     I’m Cheng. I work across Go, Node.js, TypeScript, React,
@@ -312,6 +313,7 @@ export function ProfileDocument({
                 >
                   {[
                     ["all", "All"],
+                    ["contributions", "Contributions"],
                     ["npm", "npm"],
                     ["go", "Go"],
                     ["github", "GitHub"],

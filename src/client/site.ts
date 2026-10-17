@@ -2,6 +2,7 @@ import { resolveThemePreference, setThemePreference } from "mazey";
 import { siteConfig } from "../config/site";
 import { initializeThemeController } from "./theme-controller";
 import { applyResolvedTheme } from "./theme-dom";
+import { initializeSectionNavigation } from "./section-navigation";
 import "../styles/site.css";
 
 function initializeThemeControls(): void {
@@ -68,3 +69,4 @@ function initializeProjectFilters(): void {
 
 initializeThemeControls();
 initializeProjectFilters();
+initializeSectionNavigation(window, document);

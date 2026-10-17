@@ -16,15 +16,16 @@ The sibling `../chengchuu/` repository owns the generated profile `README.md` an
 ## Source ownership
 
 - `src/config/projects.ts` is the only maintained project inventory. Mazey and AsiaTZ are required presets, and every configured project must appear on the generated homepage. Projects appear in the profile README unless `hideFromProfileReadme` is `true` in `src/config/projects.ts`.
-- `src/config/project-resources.ts` defines the shared resource labels and order: Home, Demo, Playground, Examples, API, GitHub, then npm. The homepage, generated README, and `guides/PROJECT_LINK_CHECKLIST.md` must use that order and omit unavailable resources.
+- `src/config/project-resources.ts` defines the shared resource labels and order: Home, Demo, Playground, Examples, API, GitHub, then npm. The homepage and `guides/PROJECT_LINK_CHECKLIST.md` use that order and omit unavailable resources. The generated README preserves the order but excludes GitHub and npm resource links; rows without remaining resources keep an empty Links cell. `scripts/lib/profile-readme.ts` owns this README-only policy and validates category headings and ordered table rows against generated project metadata without per-project comments.
 - `src/config/site.ts` owns the site identity, canonical origin, public asset paths, and theme settings. Access the storage key only through `siteConfig.theme.storageKey`.
+- `contributions` identifies upstream projects Cheng has contributed to. Show a Contributions filter and card label, with available upstream versions, languages, and release dates, but no creation dates or maintainership claims. Collect repository metadata and stable GitHub releases, not package registry metadata. Render visible contributions in an ordered Project/Links/Description table before npm and validate it against canonical configuration.
 - `src/generated/projects.json` is tracked normalized metadata and the fallback for temporary upstream failures. Do not hand-maintain it as a second project list.
 - `guides/PROJECT_LINK_CHECKLIST.md` mirrors known links from the canonical project configuration. Format each entry with a plain project heading followed by `- Slug: <slug>`.
 
 ## Site architecture
 
 - `src/site/ProfileDocument.tsx` server-renders the complete homepage with React. Render every project on `/`; never generate standalone top-level `/projects/`, `/playground/`, or `/api/` pages.
-- The homepage sorts project cards by descending `latestReleaseAt`, places missing or invalid dates last, and preserves configuration order for ties. This is a presentation-only sort; do not reorder the canonical configuration or generated README for it.
+- The homepage sorts project cards by descending `latestReleaseAt`, places missing or invalid dates last, and preserves configuration order for ties. Contributions are treated as undated regardless of cached release metadata. This is a presentation-only sort; do not reorder the canonical configuration or generated README for it.
 - Browser JavaScript is limited to pre-paint theme resolution, light/dark selection, project search, and category filters. Keep important profile and project content in generated HTML.
 - The visible theme control is a two-state light/dark toggle with inline Bootstrap Icons. Mazey resolves the initial URL, stored, or one-time system preference and persists explicit selections; theme updates must keep `data-bs-theme`, `data-theme-preference`, `theme-color`, the accessible label, and icon visibility synchronized without following later operating-system changes.
 - `src/styles/theme.css` owns shared theme variables. `src/styles/site.css` owns Bootstrap integration, layout, responsive styles, and component presentation.
