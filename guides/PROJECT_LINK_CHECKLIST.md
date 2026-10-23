@@ -127,7 +127,7 @@ This document lists configured project resources. [`src/config/projects.ts`](../
 
 ## GitHub projects
 
-### Vue China Map
+### Vue ECharts Map
 
 - Slug: vue-china-map
 - Demo: <https://chengchuu.github.io/vue-china-map/>

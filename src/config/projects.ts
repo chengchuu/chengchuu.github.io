@@ -185,7 +185,7 @@ export const projects = [
   },
   {
     slug: "vue-china-map",
-    name: "Vue China Map",
+    name: "Vue ECharts Map",
     category: "github",
     repository: "chengchuu/vue-china-map",
     description: "An interactive map built with Vue 3 and ECharts.",
