@@ -1,3 +1,7 @@
+import { execFileSync } from "node:child_process";
+import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import assert from "node:assert/strict";
 import test from "node:test";
 import { createElement } from "react";
@@ -7,7 +11,7 @@ import { projects } from "../src/config/projects";
 import type { GeneratedProject, ProjectConfig } from "../src/types/project";
 import { collectProject, fallbackProject } from "../scripts/generate-project-data";
 import { validateProjects } from "../scripts/lib/validate-projects";
-import { renderProfileReadme, validateProfileReadme } from "../scripts/lib/profile-readme";
+import { profileReadmeMarker, renderProfileReadme, validateProfileReadme } from "../scripts/lib/profile-readme";
 
 const fixture: GeneratedProject = {
   slug: "fixture", name: "Fixture", category: "github", status: "active",
@@ -139,7 +143,7 @@ test("contributions collect repository and stable release metadata without regis
     .includes("fixture has an unsupported category."));
 });
 
-test("empty categories are omitted and all-hidden output retains the introduction", () => {
+test("empty categories are omitted and new all-hidden output contains only the marker", () => {
   const hidden = { ...fixture, hideFromProfileReadme: true };
   const mixed = renderProfileReadme([
     hidden,
@@ -147,12 +151,10 @@ test("empty categories are omitted and all-hidden output retains the introductio
   ]);
   assert.ok(mixed.includes("## npm"));
   assert.ok(!mixed.includes("## GitHub Projects"));
-  const introduction = renderProfileReadme([]);
+  const empty = renderProfileReadme([]);
   const readme = renderProfileReadme([hidden]);
-  assert.equal(readme, introduction);
-  assert.ok(readme.includes("# Hi, I'm Cheng 👋"));
-  assert.ok(readme.includes("Welcome to my profile!"));
-  assert.ok(readme.includes("![Rock That Body](./images/rock-that-body.gif)"));
+  assert.equal(readme, empty);
+  assert.equal(readme, `${profileReadmeMarker}\n`);
   assert.ok(!readme.includes("| Project |"));
   assert.deepEqual(validateProfileReadme(readme, [hidden]), []);
 });
@@ -209,7 +211,7 @@ test("literal tables preserve content and reject row and category corruption", (
     "|:---|:---|:---|:---|", firstRow, secondRow, "",
   ].join("\n");
   assert.ok(renderProfileReadme(inputs).endsWith(table));
-  assert.deepEqual(validateProfileReadme(table, inputs), []);
+  assert.deepEqual(validateProfileReadme(profileReadmeMarker + "\n" + table, inputs), []);
   for (const invalid of [
     table.replace(firstRow + "\n", ""),
     table + secondRow + "\n",
@@ -221,7 +223,7 @@ test("literal tables preserve content and reject row and category corruption", (
     table.replace("https://example.com/demo/", "https://example.com/wrong/"),
     table.replace(firstRow, firstRow.replace(" | — |", " | — <!-- project:fixture --> |")),
   ]) {
-    assert.ok(validateProfileReadme(invalid, inputs).length > 0, invalid);
+    assert.ok(validateProfileReadme(profileReadmeMarker + "\n" + invalid, inputs).length > 0, invalid);
   }
   const identical = { ...fixture, slug: "identical" };
   const repeated = renderProfileReadme([fixture, identical]);
@@ -291,4 +293,60 @@ test("successful metadata collection and homepage retain hidden projects", async
   assert.ok(html.includes('data-project-slug="fixture"'));
   assert.ok(html.includes('href="https://example.com/demo/"'));
   assert.deepEqual(rowNames(renderProfileReadme([hidden])), []);
+});
+
+
+test("regeneration preserves the custom introduction and validates only generated content", () => {
+  const intro = '# Hi, I\'m Cheng 👋\r\n\r\nI live with my cat, Dudu.\r\n'
+    + '<img src="./images/dudu-225x159-tiny.png" alt="Dudu" width="229" height="165">\r\n'
+    + '## About me\r\n- [GitHub](https://github.com/chengchuu)\r\n| Personal | table |\r\n\r\n';
+  const existing = intro + profileReadmeMarker + "\r\n\r\nOutdated projects\r\n";
+  const rendered = renderProfileReadme([fixture], existing);
+  assert.ok(rendered.startsWith(intro + profileReadmeMarker));
+  assert.ok(!rendered.includes("Outdated projects"));
+  assert.deepEqual(validateProfileReadme(rendered, [fixture]), []);
+  assert.equal(renderProfileReadme([fixture], rendered), rendered);
+  assert.equal(renderProfileReadme([], existing), intro + profileReadmeMarker + "\n");
+  assert.ok(validateProfileReadme(rendered.replace("| Fixture |", "| Wrong |"), [fixture]).length > 0);
+});
+
+test("existing README without a unique marker is not overwritten", () => {
+  for (const existing of ["", "My personal README", profileReadmeMarker + "\n" + profileReadmeMarker]) {
+    assert.throws(() => renderProfileReadme([fixture], existing), /exactly one/);
+  }
+});
+
+test("README CLI preserves custom content, handles new output, and refuses missing markers", () => {
+  const directory = mkdtempSync(path.join(tmpdir(), "profile-readme-"));
+  const output = path.join(directory, "README.md");
+  const args = ["--import", "tsx", "scripts/generate-readme.ts", "--output", output];
+  try {
+    execFileSync(process.execPath, args);
+    assert.ok(readFileSync(output, "utf8").startsWith(profileReadmeMarker + "\n"));
+    const intro = "# My profile\n\nMy own introduction and image.\n\n";
+    writeFileSync(output, intro + profileReadmeMarker + "\nOld content\n");
+    execFileSync(process.execPath, args);
+    assert.ok(readFileSync(output, "utf8").startsWith(intro + profileReadmeMarker));
+    assert.ok(!readFileSync(output, "utf8").includes("Old content"));
+    writeFileSync(output, "Unmarked personal content\n");
+    assert.throws(() => execFileSync(process.execPath, args, { stdio: "pipe" }));
+    assert.equal(readFileSync(output, "utf8"), "Unmarked personal content\n");
+  } finally {
+    rmSync(directory, { recursive: true, force: true });
+  }
+});
+
+
+test("README validation requires exactly one complete generated marker", () => {
+  for (const inputs of [[], [fixture]]) {
+    const readme = renderProfileReadme(inputs);
+    for (const invalid of [
+      readme.replace(profileReadmeMarker, ""),
+      readme.replace(profileReadmeMarker, "<!-- Generated projects -->"),
+      readme + profileReadmeMarker + "\n",
+    ]) {
+      assert.ok(validateProfileReadme(invalid, inputs).some(error => error.includes("exactly one")));
+      assert.throws(() => renderProfileReadme(inputs, invalid), /exactly one/);
+    }
+  }
 });

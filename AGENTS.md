@@ -96,3 +96,9 @@ The build fetches live metadata and rewrites `src/generated/projects.json` and `
 - Do not stage, commit, push, or deploy unless the user requests it.
 
 For implementation changes, run `npm run check`. For documentation-only changes, run the narrowest relevant checks. Always finish with `git diff --check` and inspect `git status --short` in this repository and `../chengchuu/`. Report network-dependent failures separately.
+
+## Profile README ownership
+
+The content above the generated-file comment in the profile README is user-authored. Edit the introduction and image there directly; generation preserves that prefix exactly. The comment marks the beginning of the generated project section, which extends to the end of the file. Keep exactly one marker. Generation refuses to overwrite an existing README with a missing or duplicate marker.
+
+A new output file contains only the generated marker and project sections. Add personal content above the marker. Existing project rows remain generated from the canonical project configuration; do not edit them manually.

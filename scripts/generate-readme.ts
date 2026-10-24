@@ -1,3 +1,4 @@
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { isProfileReadmeVisible, renderProfileReadme } from "./lib/profile-readme";
 import { writeText } from "./lib/files";
@@ -21,7 +22,13 @@ function outputPathFromArgs(): string {
 async function main(): Promise<void> {
   const projects = await readGeneratedProjects();
   const outputPath = outputPathFromArgs();
-  await writeText(outputPath, renderProfileReadme(projects));
+  let existingReadme: string | undefined;
+  try {
+    existingReadme = await readFile(outputPath, "utf8");
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
+  }
+  await writeText(outputPath, renderProfileReadme(projects, existingReadme));
   const visibleCount = projects.filter(isProfileReadmeVisible).length;
   console.log(`Generated ${outputPath} with ${visibleCount} visible projects.`);
 }

@@ -29,17 +29,22 @@ function table(projects: ReadmeProject[]): string {
   ].join("\n");
 }
 
-export function renderProfileReadme(projects: readonly ReadmeProject[]): string {
+export const profileReadmeMarker = "<!-- This file is generated. Edit project data in chengchuu.github.io/src/config/projects.ts. -->";
+
+function generatedSectionStart(readme: string): number {
+  const markers = [...readme.matchAll(/^<!-- This file is generated\. Edit project data in chengchuu\.github\.io\/src\/config\/projects\.ts\. -->\r?$/gm)];
+  if (markers.length !== 1) {
+    throw new Error("Existing README must contain exactly one generated-content marker; refusing to overwrite it.");
+  }
+  return markers[0]!.index!;
+}
+
+export function renderProfileReadme(
+  projects: readonly ReadmeProject[],
+  existingReadme?: string,
+): string {
   const visibleProjects = projects.filter(isProfileReadmeVisible);
-  const sections = [
-    "# Hi, I'm Cheng 👋",
-    "",
-    "Welcome to my profile!",
-    "",
-    "![Rock That Body](./images/rock-that-body.gif)",
-    "",
-    "<!-- This file is generated. Edit project data in chengchuu.github.io/src/config/projects.ts. -->",
-  ];
+  const sections = [profileReadmeMarker];
 
   const contributions = visibleProjects.filter(project => project.category === "contributions");
   if (contributions.length > 0) {
@@ -64,7 +69,10 @@ export function renderProfileReadme(projects: readonly ReadmeProject[]): string 
     sections.push("", `## ${heading}`, "", table(categoryProjects));
   }
 
-  return `${sections.join("\n")}\n`;
+  const rendered = `${sections.join("\n")}\n`;
+  if (existingReadme === undefined) return rendered;
+  return existingReadme.slice(0, generatedSectionStart(existingReadme))
+    + rendered;
 }
 
 export function validateProfileReadme(
@@ -82,6 +90,11 @@ export function validateProfileReadme(
     }
     return [{ ...project, createdAt: metadata.createdAt, latestReleaseAt: metadata.latestReleaseAt }];
   });
+  try {
+    readme = readme.slice(generatedSectionStart(readme));
+  } catch (error) {
+    return [...errors, (error as Error).message];
+  }
   const lines = readme.split(/\r?\n/);
   if (configuredProjects.some(project => isProfileReadmeVisible(project) && project.category !== "contributions") && (
     !lines.includes("| Project | Links | Created | Latest release |") ||
